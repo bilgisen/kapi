@@ -5,7 +5,7 @@
 - Repo: kap (apps/fetch)
 
 ## 1. Amaç
-KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) bildirimleri çeken, BIST 100'e filtreleyen, gerektiğinde PDF indirip parse eden ve D1'e (kapi-db) yazan backend servisini yazmak.
+KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) **tüm piyasa bildirimlerini** çeken, XU100 üyelerini etiketleyen (BIST100), gerektiğinde PDF indirip parse eden ve D1'e (kapi-db) yazan backend servisini yazmak.
 
 ## 2. Kapsam Dışı
 - Sınıflandırma / skorlama (S2 — ayrı worker)
@@ -16,17 +16,19 @@ KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) bildirimleri 
 
 ### Faz 1 — KAP client katmanı
 - `kap_client.py`: liste/detay çağrıları (public API) + `mkk_vyk_client.py` referansı (oldfiles'tan uyarla, VY olursa).
+- **Tüm piyasa çekimi**: `byCriteria` gövdesinde `mkkMemberOidList: []` (FFFF) — BIST100 OID filtrelemesi YOK (K2 revizyonu).
+- Pencere: 1-2 gün (2000 kayıt tavanı; spike: 614/gün) — pazar saatinde 3dk / dışı 15dk tekrar.
 - Oturum warmup, rate-limit, timeout (KAP WAF: 666).
-- Doğrulama: 30dk pencere sorgusu çalışıyor.
+- Doğrulama: 2 günlük pencere sorgusu çalışıyor, kayıt sayısı < 2000.
 
-### Faz 2 — BIST 100 üyelik listesi
-- XU100 üyelik listesini KAP endeks sorgusundan veya Hono index-constituents verisinden al, `bist100_members` tablosuna yaz.
+### Faz 2 — XU100 etiketleme listesi
+- XU100 üyelik listesi (KAP endeks excel veya Hono index-constituents) `bist100_members` tablosuna yazılır — **fetch filtresi değil, etiket** (kap_notifications.is_bist100).
 - Aylık/çeyrek tazeleme görevi.
-- Doğrulama: 100 civarı kod, örnek AEBES/BIMAS üyeliği mevcut.
+- Doğrulama: 100 civarı kod; AEBES/BIMAS üyeliği mevcut; bildirim yazımında bayrak doğru set ediliyor.
 
 ### Faz 3 — D1 şema + yazma katmanı
-- Schemas: kap_notifications, kap_analysis, notification_companies, kap_sync_state, bist100_members (benzer Claude önerisi).
-- Python -> Cloudflare D1 HTTP API yazma katmanı (batch UPSERT, idempotent dokunma).
+- Schemas: kap_notifications (is_bist100 bayrağı dahil), kap_analysis, notification_companies, kap_sync_state, bist100_members (benzer Claude önerisi).
+- Python -> Cloudflare D1 HTTP API yazma katmanı (batch UPSERT, idempotent dokunma; OAuth access+refresh token auto-renew, client_id 54d11594-...).
 - Doğrulama: bir satır yazıldı, tekrar çalışınca dup yok.
 
 ### Faz 4 — Polling orkestrasyonu
@@ -35,7 +37,7 @@ KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) bildirimleri 
 - Doğrulama: log kayıtları, false positive yok.
 
 ### Faz 5 — PDF pipeline
-- file/download {objId} -> Java byte[] wrapper çöz (offset 27, struct) -> pdfminer.six cp1252 -> metin (ilk 8K)
+- İndirme: önce temiz `/en/api/BildirimPdf/{index}` (spike 1.4 — wrapper yok); başarısızsa `/file/download/{objId}` Java byte[] wrapper (offset 27) -> pdfminer.six cp1252 -> metin (ilk 8K).
 - Sadece yüksek öncelikli konular için PDF çek (Temettü, Finansal Rapor, Özel Durum, Sermaye Artırımı, Birleşme, Genel Kurul, DKB).
 - Doğrulama: 2-3 örnek PDF'ten ekstrakte edilebilen metin.
 
@@ -49,8 +51,8 @@ KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) bildirimleri 
 - Doğrulama: remote health OK, log rotasyonu.
 
 ## 4. Görev Listesi
-- [ ] S1-1 KAP client + VYK client (referans uyarlama)
-- [ ] S1-2 BIST100 üyelik haritası + bist100_members
+- [ ] S1-1 KAP client (tüm piyasa list/detay/PDF) + VYK client (referans uyarlama)
+- [ ] S1-2 XU100 etiketleme haritası + bist100_members (etiket amaçlı)
 - [ ] S1-3 D1 şema + Python->D1 HTTP API katmanı
 - [ ] S1-4 Polling orkestrasyonu (pazar saatleri, lock)
 - [ ] S1-5 PDF pipeline (java wrapper, cp1252, truncate)

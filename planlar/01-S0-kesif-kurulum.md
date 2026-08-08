@@ -1,6 +1,6 @@
 # S0 — Keşif & Kurulum
 
-- Durum: [x] başladı
+- Durum: [x] tamamlandı
 - Bağımlılık: -
 - Repo: kap
 
@@ -40,8 +40,8 @@ Yeni reponun temelini atmak: git kurulumu, plan altyapısı, referans kopyası (
 - [x] S0-3 oldfiles/ kopyası (investapi -> kap/oldfiles)
 - [x] S0-4 A/B spike: KAP public API test (kazandı) -> docs/spike-kap-api.md
 - [x] S0-5 A/B spike: MKK VYK client test (gateway erişilemiyor -> raporlandı)
-- [ ] S0-6 D1 kapi-db sağlama + Python->D1 API token
-- [ ] S0-7 env şablonları (.env.example, wrangler.jsonc)
+- [x] S0-6 D1 kapi-db sağlama + Python->D1 API token (wrangler OAuth: access+refresh token, HTTP API doğrulandı, client_id 54d11594-...)
+- [x] S0-7 env şablonları (.env.example, wrangler.jsonc)
 
 ## 5. Kararlar
 - K1: KAP public JSON API kazandı (spike raporu docs/spike-kap-api.md). MKK VYK opsiyonel fallback.
@@ -51,4 +51,4 @@ Yeni reponun temelini atmak: git kurulumu, plan altyapısı, referans kopyası (
 ## 6. Kabul Kriterleri
 - [x] Repo GitHub'da
 - [x] KAP API spike raporu yazıldı, kaynak kararı verildi
-- [ ] D1 yazma/okuma test edildi
+- [x] D1 yazma/okuma test edildi

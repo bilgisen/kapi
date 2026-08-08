@@ -16,6 +16,7 @@ Chatbot'un KAP bildirimleri bağlamını kullanmasını sağlamak: genel feed co
 ### Faz 1 — Context akışı
 - Hono ai-chat.js: `sirket:${TICKER}:bildirimler` context tipi tanı -> KAPI context endpoint'ini çağır.
 - Genel feed sayfasında context `kap:feed` (yeni tip) -> feed context endpoint.
+- On-demand analizler (K11) de context'e dahil edilir (analiz varsa özeti kullanılır).
 - Context string'i system prompt'a eklenir (özet + önemli bildirimler).
 - Doğrulama: sohbet oturumunda bildirim bilgisi sorulan soruya cevap veriyor.
 

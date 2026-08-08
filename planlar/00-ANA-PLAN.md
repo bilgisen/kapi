@@ -15,15 +15,17 @@ Ayırt edici değer: AI işleme + güzel tasnif + şirket sayfaları entegrasyon
 | # | Karar | Seçim |
 |---|---|---|
 | K1 | Veri kaynağı | **Kesinleşti: KAP public JSON API** (auth'suz) — MKK VYK gateway erişilemiyor (spike raporu) |
-| K2 | Kapsam | Yalnızca BIST 100 üyeleri (XU100 listesi KAP endeks API'den periyodik tazelenir) |
-| K3 | Önem skoru | Kural tabanlı (taksonomi + isLate/PDF varlığı ayarlayıcıları), 1-10 |
+| K2 | Kapsam | **Tüm KAP bildirimleri** (BIST100 = etiket + öncelik katmanı) |
+| K3 | Önem skoru | Kural tabanlı (taksonomi + isLate/PDF varlığı ayarlayıcıları), 1-10 — **tüm bildirimlerde** |
 | K4 | Düşük skorlu özet | KAP'ın kendi özeti (AI çağrısı yok); VYK'da özet yoksa "özet yok" etiketi |
-| K5 | Yüksek skorlu AI | skor ≥ 5: Gemini; ≥ 8: daha güçlü model tier; PDF içeriği prompt'a eklenir |
+| K5 | Yüksek skorlu AI | BIST100 + skor ≥ 8: pro model; BIST100 + 5-7: Flash; diğerleri: on-demand buton (K11) |
 | K6 | DB | Cloudflare D1 (kapi-db); Python W1 D1 HTTP API ile yazar |
 | K7 | Servis barındırma | W1: FastAPICloud (Python, pdfminer ile PDF parse); W2/W3: Cloudflare Workers (TS) |
 | K8 | Repo | /kap = monorepo kökü, git init + GitHub bilgisen/kapi'ye push; investapi KAP dosyaları oldfiles/ kopyası (silinmez) |
 | K9 | Chatbot | Ayrı alt plan (S6); context: feed geneli + şirket sayfası özel |
-| K10 | Frontend | /bildirimler feed sayfası + /hisse/$ticker/bildirimler sekmesi; PDF için KAP orijinal linki |
+| K10 | Frontend | /bildirimler feed sayfası (tüm bildirimler + BIST100 chip) + /hisse/$ticker/bildirimler sekmesi; PDF için KAP orijinal linki |
+| K11 | On-demand AI | Her bildirimde "AI ile analiz" butonu (herkese açık) — limit + KV cache, bir kez analiz |
+| K12 | Veri saklama | Tüm bildirimler kalıcı (cleanup yok) |
 
 ## 3. Mimari
 
@@ -35,10 +37,10 @@ W1  kapi-fetch · Python FastAPI @ FastAPICloud
     bildirim listesi -> detay -> PDF çek/parse (cp1252, java-wrapper) -> D1'e raw yaz
         |
         v
-W2  kapi-classify · CF Worker (TS) — kural motoru: kategori + skor 1-10
+W2  kapi-classify · CF Worker (TS) — kural motoru: kategori + skor 1-10 (TÜM bildirimler)
         |
         v
-W3  kapi-ai · CF Worker (TS) — skor>=5 için Gemini ozet/etki/rakamlar/context
+W3  kapi-ai · CF Worker (TS) — BIST100 skor>=5 otomatik + her bildirim için on-demand (K11)
         |
         v
 D1  kapi-db (kap_notifications, kap_analysis, notification_companies, sync_state, bist100_members)
@@ -69,9 +71,9 @@ Durum işaretleri: [x] tamam / [ ] bekliyor
 - [x] S0-2 planlar/ yapısı + şablon dosyaları + karar kaydı
 - [x] S0-3 investapi -> oldfiles/ referans kopyası
 - [x] S0-4 KAP API A/B doğrulama spike (public JSON kazandı; PDF: BildirimPdf temiz + file/download wrapper) -> K1 kesinleşti
-- [ ] S0-5 D1 kapi-db sağlama + Cloudflare token yetkileri + GEMINI_API_KEY
-- [ ] S1-1 KAP client (list/detay/PDF) + VYK client (referans)
-- [ ] S1-2 BIST100 üyelik listesi çekme + bist100_members tablosu
+- [x] S0-5 D1 kapi-db sağlama + Cloudflare token yetkileri (wrangler OAuth: access+refresh, HTTP API doğrulandı) + GEMINI_API_KEY (investapi'den var)
+- [ ] S1-1 KAP client (list/detay/PDF; tüm piyasa "FFFF", pencere 1-2 gün) + VYK client (referans)
+- [ ] S1-2 XU100 etiketleme listesi (bist100_members — fetch filtresi DEĞİL, etiket için; Hono constituents / KAP excel)
 - [ ] S1-3 D1 şema + migrasyon + Python->D1 HTTP API yazma katmanı
 - [ ] S1-4 Polling orkestrasyonu (warmup, rate-limit, pencere)
 - [ ] S1-5 PDF parse pipeline (java wrapper, cp1252, 8K truncate)
@@ -83,14 +85,15 @@ Durum işaretleri: [x] tamam / [ ] bekliyor
 - [ ] S2-4 Batch/retry + kuyruk davranışı
 - [ ] S3-1 Prompt mimarisi (summary_tr, site, key_numbers, sentiment, chatbot_context) JSON çıktı
 - [ ] S3-2 Model tiering (>=8 pro / 5-7 flash); düşük skor -> KAP özeti (K4)
-- [ ] S3-3 Trigger (cron/queue), retry, token bütçesi
+- [ ] S3-3 Trigger (cron/queue BIST100 skor>=5), retry, token bütçesi + on-demand analyze endpoint (K11, KV cache)
 - [ ] S3-4 Analiz KV cache + D1 yazımı
-- [ ] S4-1 GET /api/notifications (filtre: önem/kategori/sektör/sirket, sayfalama)
+- [ ] S4-1 GET /api/notifications (filtre: önem/kategori/sektör/sirket/BIST100, sayfalama)
 - [ ] S4-2 GET /api/notifications/:ticker
 - [ ] S4-3 GET /api/notifications/detail/:disclosureIndex (AI analiz + PDF link)
-- [ ] S4-4 KV cache + CORS + auth tier
-- [ ] S4-5 Chatbot context endpoint'leri (/api/notifications/context/feed, /context/:ticker) — S6 kullanır
-- [ ] S5-1 /bildirimler feed sayfası (kartlar, filtreler, skeleton)
+- [ ] S4-4 POST /api/notifications/:disclosureIndex/analyze (on-demand AI, K11 — limit + cache)
+- [ ] S4-5 KV cache + CORS + auth tier
+- [ ] S4-6 Chatbot context endpoint'leri (/api/notifications/context/feed, /context/:ticker) — S6 kullanır
+- [ ] S5-1 /bildirimler feed sayfası (TÜM bildirimler; kartlar, BIST100 chip, filtreler, skeleton, AI-buton)
 - [ ] S5-2 /hisse/$ticker/bildirimler sekmesi (TABS + route)
 - [ ] S5-3 Detay görünümü (analiz, anahtar rakamlar, "Orijinal PDF" linki)
 - [ ] S5-4 "Bugünün önemli bildirimleri" banner widget

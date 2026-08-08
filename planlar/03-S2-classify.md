@@ -5,7 +5,7 @@
 - Repo: kap (apps/classify)
 
 ## 1. Amaç
-W1'den gelen ham bildirimleri kural tabanlı sınıflandırmak: kategori + önem skoru (1-10) + zaman ufku + duyarlılık ipucu. LLM çağrısı yok — deterministik, ucuz, hızlı. Sonucu D1'e yazar ve yüksek skorluları W3'e (AI) tetikler.
+W1'den gelen ham bildirimleri kural tabanlı sınıflandırmak: kategori + önem skoru (1-10) + zaman ufku + duyarlılık ipucu. LLM çağrısı yok — deterministik, ucuz, hızlı. **TÜM bildirimler skorlanır** (K3); BIST100 skor>=5 olanlar W3'e (AI) tetiklenir, diğerleri KAP özeti + on-demand buton (K11) ile ilerler.
 
 ## 2. Kapsam Dışı
 - AI özet/analiz (S3)
@@ -31,9 +31,9 @@ W1'den gelen ham bildirimleri kural tabanlı sınıflandırmak: kategori + önem
 - Doğrulama: curl ile ingest sonrası D1'de satır.
 
 ### Faz 4 — W3 tetikleme + batch/retry
-- Skor >= 5 olanlar için W3'e tetik (queue veya HTTP callback).
+- **Sadece is_bist100=1 VE skor >= 5** için W3'e tetik (queue veya HTTP callback). Diğerleri W3'ün on-demand endpoint'ine hazır bekler.
 - Retry mantığı (3 deneme, backoff), hata logları.
-- Doğrulama: skor 5+ bildirim W3 tarafından işlendi.
+- Doğrulama: BIST100 skor 5+ bildirim W3 tarafından işlendi; BIST100 dışı işlenmedi.
 
 ## 4. Görev Listesi
 - [ ] S2-1 Taksonomi + kural motoru + unit testler

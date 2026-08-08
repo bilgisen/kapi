@@ -22,9 +22,9 @@ Bildirimler için iki ekran: genel feed sayfası (gerçek zamanlı "Bugünün ö
 
 ### Faz 2 — Genel feed sayfası
 - Yol: `/bildirimler` (yeni route) + nav'a link.
-- Üst banner: "Bugünün önemli bildirimleri" (skor>=7, son 24sa).
-- Filtreler: önem, kategori, sektör, şirket arama.
-- Kart: logo, ticker, tür, skor etiketi, özet, zaman, PDF link ikonu.
+- Üst banner: "Bugünün önemli bildirimleri" (BIST100, skor>=7, son 24sa).
+- Filtreler: **Tümü / BIST100 chip**, önem, kategori, sektör, şirket arama.
+- Kart: logo, ticker (BIST100 rozeti), tür, skor etiketi, özet, zaman, PDF link ikonu, **"AI analiz" butonu (K11 — analiz yoksa buton, tıklanınca sonuç kartı)**.
 - Skeleton, boş durum, hata durumu, sayfalama/yükleme.
 - Doğrulama: SSR + client tarafı filter'ları çalışıyor.
 
@@ -48,7 +48,7 @@ Bildirimler için iki ekran: genel feed sayfası (gerçek zamanlı "Bugünün ö
 
 ## 4. Görev Listesi
 - [ ] S5-1 Hook'lar ve tipler
-- [ ] S5-2 /bildirimler feed sayfası + nav linki
+- [ ] S5-2 /bildirimler feed sayfası (tüm bildirimler + BIST100 chip + AI butonu) + nav linki
 - [ ] S5-3 /hisse/:ticker/bildirimler sekmesi (TABS + route)
 - [ ] S5-4 Detay görünümü (/bildirimler/:disclosureId)
 - [ ] S5-5 Ortak bileşenler + durum/mobil iyileştirmeleri

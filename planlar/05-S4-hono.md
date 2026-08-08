@@ -20,8 +20,8 @@ Mevcut Hono orchestrator'a KAP bildirim endpoint'lerini eklemek: feed, şirket b
 - Doğrulama: basit SELECT çalışıyor.
 
 ### Faz 2 — Feed endpoint
-- `GET /api/notifications?importance=&category=&stock=&page=`
-  - Birleştir: kap_notifications + kap_analysis (SUMMARY, skor, etiket).
+- `GET /api/notifications?importance=&category=&stock=&bist100=&page=`
+  - Birleştir: kap_notifications + kap_analysis (SUMMARY, skor, etiket) — **tüm bildirimler** (K2), `is_bist100` filtre/rozet için.
   - Sayfalama: sayfa bazlı (spark, 20-50 item).
   - Sıralama: publish_date DESC, importance DESC.
 - KV cache: pazar saatinde 5dk, dışı 30dk.
@@ -32,10 +32,12 @@ Mevcut Hono orchestrator'a KAP bildirim endpoint'lerini eklemek: feed, şirket b
 - Şirket sayfası sekmesi için: son 30-90 gün bildirimleri + son finansal rapor öne çıkar (overview kart).
 - Doğrulama: örnek ticker (YKBNK, THYAO) dolu sonuç.
 
-### Faz 4 — Detay endpoint'i
+### Faz 4 — Detay + on-demand AI endpoint'leri
 - `GET /api/notifications/detail/:disclosureId`
-- AI analiz alanları, anahtar rakamlar, KAP orijinal linki (kap_link), düzeltme zinciri bilgisi.
-- Doğrulama: disclosureId ile tam dolu yanıt.
+  - AI analiz alanları, anahtar rakamlar, KAP orijinal linki (kap_link), düzeltme zinciri bilgisi.
+- `POST /api/notifications/:disclosureId/analyze` (K11)
+  - W3'e yönlendirir: analiz varsa KV cache döner, yoksa üretir; günlük limit (herkese açık).
+- Doğrulama: disclosureId ile tam dolu yanıt; analyze ikinci kez cache döner.
 
 ### Faz 5 — Chatbot context endpoint'leri
 - `GET /api/notifications/context/feed` — son 24sa önemli bildirimler (skor>=7).
@@ -48,8 +50,9 @@ Mevcut Hono orchestrator'a KAP bildirim endpoint'lerini eklemek: feed, şirket b
 - [ ] S4-2 GET /api/notifications (feed)
 - [ ] S4-3 GET /api/notifications/:ticker
 - [ ] S4-4 GET /api/notifications/detail/:disclosureId
-- [ ] S4-5 context endpoint'leri (+ cache)
-- [ ] S4-6 CORS/auth güncellemesi + testler
+- [ ] S4-5 POST /api/notifications/:disclosureId/analyze (K11 — cache-first + limit)
+- [ ] S4-6 context endpoint'leri (+ cache)
+- [ ] S4-7 CORS/auth güncellemesi + testler
 
 ## 5. Kararlar
 - D1 binding adı: KAPI_DB.
