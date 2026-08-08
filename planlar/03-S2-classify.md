@@ -1,0 +1,52 @@
+# S2 — W2 Sınıflandırma Worker (kapi-classify, Cloudflare Worker TS)
+
+- Durum: başlamadı
+- Bağımlılık: S0, S1 (kısmen — ingest endpoint'i için W1'in D1 şeması gerekir)
+- Repo: kap (apps/classify)
+
+## 1. Amaç
+W1'den gelen ham bildirimleri kural tabanlı sınıflandırmak: kategori + önem skoru (1-10) + zaman ufku + duyarlılık ipucu. LLM çağrısı yok — deterministik, ucuz, hızlı. Sonucu D1'e yazar ve yüksek skorluları W3'e (AI) tetikler.
+
+## 2. Kapsam Dışı
+- AI özet/analiz (S3)
+- PDF parse (S1)
+- Frontend/Hono (S4-S5)
+
+## 3. Fazlar
+
+### Faz 1 — Taksonomi + kural motoru
+- Kategoriler: FİNANSAL_RAPOR, TEMETTÜ, SERMAYE_ARTIRIMI, SERMAYE_AZALTIMI, TAHVİL_İHRACI, BİRLEŞME_DEVİRALMA, GERİ_ALIM, ORTAKLIK_DEĞİŞİKLİĞİ, YK_KARAR, GENEL_KURUL, ÖZEL_DURUM, PAY_ALIM_SATIM, BÜYÜK_ORTAKLIK, ÜRETİM_SATIŞ, İHALE, HUKUKİ, KREDİ_NOTU, DENETİM, DÜZELTME, RUTİN, BELİRSİZ.
+- `CLASSIFICATION_RULES` (matchSubjects + matchKeywords + baseImportance + timeHorizon).
+- Doğrulama: unit testler, 50 örnek bildirimde doğru kategori.
+
+### Faz 2 — Skor ayarlayıcılar + fallback
+- `adjustImportance`: isLate +1, hasPdfText +0.5, üst sınır 10.
+- `scoreToLabel`: KRİTİK/ÇOK_ÖNEMLİ/ÖNEMLİ/RUTİN.
+- Eşleşme yoksa UNKNOWN (skor 3) + `needs_review` flag.
+- Doğrulama: sınır değerler test ediliyor (5/7/9).
+
+### Faz 3 — Ingest endpoint + D1 yazımı
+- POST /ingest (W1 çağırır): raw bildirim al, sınıflandır, kap_analysis'e yaz, notification_companies bağla.
+- W1 için auth (paylaşılan secret).
+- Doğrulama: curl ile ingest sonrası D1'de satır.
+
+### Faz 4 — W3 tetikleme + batch/retry
+- Skor >= 5 olanlar için W3'e tetik (queue veya HTTP callback).
+- Retry mantığı (3 deneme, backoff), hata logları.
+- Doğrulama: skor 5+ bildirim W3 tarafından işlendi.
+
+## 4. Görev Listesi
+- [ ] S2-1 Taksonomi + kural motoru + unit testler
+- [ ] S2-2 Skor ayarlayıcılar + UNKNOWN/needs_review fallback
+- [ ] S2-3 Ingest endpoint + D1 yazımı + auth
+- [ ] S2-4 W3 tetikleme + retry/backoff
+- [ ] S2-5 wrangler.jsonc + deploy konfigürasyonu
+
+## 5. Kararlar
+- Kategoriler Claude notundaki enum temel alındı (kısaltma/İngilizce key, Türkçe etiket).
+- Ingest güvenliği: paylaşılan secret header.
+
+## 6. Kabul Kriterleri
+- [ ] Kural motoru deterministik (aynı girdi -> aynı çıktı)
+- [ ] Skor dağılımı makul (çoğunluk düşük skor)
+- [ ] Ingest sonrası D1'de veri, W3 tetikleme çalışıyor

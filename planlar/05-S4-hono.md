@@ -1,0 +1,61 @@
+# S4 — Hono Entegrasyonu (orchestrator endpoint'leri)
+
+- Durum: başlamadı
+- Bağımlılık: S1-S3 (veri hazır), S6 kısmen bu plana dayanır
+- Repo: hono (mevcut repo, değişiklik burada yapılır)
+
+## 1. Amaç
+Mevcut Hono orchestrator'a KAP bildirim endpoint'lerini eklemek: feed, şirket bazlı liste, detay (AI analiz + PDF link) ve chatbot context uçları. KV cache, auth tier ve mevcut katkı kalıpları (withCache, env helpers) kullanılır.
+
+## 2. Kapsam Dışı
+- A (yazma) — Hono read-only
+- AI üretimi (S3'te)
+- Chatbot UI (S6)
+
+## 3. Fazlar
+
+### Faz 1 — D1 kapi-db binding
+- wrangler.jsonc'ye `KAPI_DB` (D1) binding ekle.
+- env.js'ye `getKapiDb(env)` helper.
+- Doğrulama: basit SELECT çalışıyor.
+
+### Faz 2 — Feed endpoint
+- `GET /api/notifications?importance=&category=&stock=&page=`
+  - Birleştir: kap_notifications + kap_analysis (SUMMARY, skor, etiket).
+  - Sayfalama: sayfa bazlı (spark, 20-50 item).
+  - Sıralama: publish_date DESC, importance DESC.
+- KV cache: pazar saatinde 5dk, dışı 30dk.
+- Doğrulama: filtre ve sayfalama testleri.
+
+### Faz 3 — Şirket endpoint'i
+- `GET /api/notifications/:ticker`
+- Şirket sayfası sekmesi için: son 30-90 gün bildirimleri + son finansal rapor öne çıkar (overview kart).
+- Doğrulama: örnek ticker (YKBNK, THYAO) dolu sonuç.
+
+### Faz 4 — Detay endpoint'i
+- `GET /api/notifications/detail/:disclosureId`
+- AI analiz alanları, anahtar rakamlar, KAP orijinal linki (kap_link), düzeltme zinciri bilgisi.
+- Doğrulama: disclosureId ile tam dolu yanıt.
+
+### Faz 5 — Chatbot context endpoint'leri
+- `GET /api/notifications/context/feed` — son 24sa önemli bildirimler (skor>=7).
+- `GET /api/notifications/context/:ticker` — son 30 gün şirket bildirimleri + son finansal rapor.
+- KV cache + auth (tier) + JetToken metering burada (opsiyonel S6).
+- Doğrulama: context string'i örneklendi, Chatbot ön izleme.
+
+## 4. Görev Listesi
+- [ ] S4-1 D1 binding + env helper
+- [ ] S4-2 GET /api/notifications (feed)
+- [ ] S4-3 GET /api/notifications/:ticker
+- [ ] S4-4 GET /api/notifications/detail/:disclosureId
+- [ ] S4-5 context endpoint'leri (+ cache)
+- [ ] S4-6 CORS/auth güncellemesi + testler
+
+## 5. Kararlar
+- D1 binding adı: KAPI_DB.
+- Endpoint kökü: /api/notifications (mevcut route'larla çakışma yok).
+
+## 6. Kabul Kriterleri
+- [ ] Feed ve şirket sorguları frontend'de görüntülenebiliyor
+- [ ] Detay AI alanları + PDF linki dolu
+- [ ] Chatbot context string'leri (30 gün / 24 saat) üretiliyor

@@ -1,0 +1,33 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Env & secrets
+.env
+.env.local
+.dev.vars
+
+# Build
+dist/
+.output/
+.wrangler/
+
+# Cloudflare
+.wrangler/
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.windsurf/
+
+# Logs
+*.log
+logs/
+
+# Local SQLite
+*.db
+*.sqlite3
