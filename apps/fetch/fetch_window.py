@@ -115,6 +115,7 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--from-date", type=parse_date, dest="from_date")
     p.add_argument("--to", type=parse_date, dest="to_date")
     p.add_argument("--no-write", action="store_true", help="sadece çek, yazma")
+    p.add_argument("--pdf", action="store_true", help="öncelikli konuların PDF'lerini çek+parse (S1-5)")
     args = p.parse_args(argv)
 
     to = args.to_date or date.today()
@@ -147,6 +148,17 @@ def main(argv: list[str] | None = None) -> None:
             wrote += 1
         except Exception as exc:  # noqa: BLE001
             last_err = exc
+
+    if args.pdf:
+        from pdf_pipeline import fetch_and_store
+
+        pdf_client = KapClient()
+        pdf_done = 0
+        for item in items:
+            if fetch_and_store(pdf_client, d1, item):
+                pdf_done += 1
+        print(f"PDF işlenen (öncelikli+başarılı): {pdf_done}/{len(items)}")
+
     print(f"D1'e yazılan: {wrote}/{len(items)}" + (f" — son hata: {last_err}" if last_err else ""))
 
     d1.execute(
