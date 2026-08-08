@@ -57,7 +57,8 @@ KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) **tüm piyasa
 - [x] S1-4 Polling orkestrasyonu (pazar saatleri 3dk/15dk, O_EXCL lock + stale, backoff)
 - [x] S1-5 PDF pipeline (BildirimPdf temiz yol + file/download wrapper offset 27; lokalde CRFA örneklerden 24.8K/112.8K karakter doğrulandı)
 - [x] S1-6 Duplicate / düzeltme işleme (disclosure_index UNIQUE idempotent; detay çekimi yalnız yeni kayıtlarda — disclosure_body işaretçisi; mkk_member_oid 14/14 doğrulandı)
-- [ ] S1-7 FastAPICloud deploy + health/log
+- [x] S1-7 FastAPI app: /health, POST /api/cron/refresh (X-Fetch-Secret), /api/sync-state + Dockerfile (yerel test edildi: health ok, sync-state D1'den)
+- [ ] S1-7b FastAPICloud deploy (fastapicloud CLI — kullanıcı hesabı ile; env: .env'deki değerler)
 - [ ] S1-8 Requirements + Dockerfile + CI taslağı
 
 ## 5. Kararlar
