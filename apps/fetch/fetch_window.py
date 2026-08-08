@@ -109,6 +109,32 @@ def upsert_notification(
     return tickers
 
 
+def fetch_detail_updates(client, d1, item) -> str | None:
+    """Yeni bildirimin detayını çeker; mkk_member_id/is_changed/related/disclosure_body doldurur."""
+    idx = str(item.get("disclosureIndex") or "")
+    detail = client.attachment_detail(idx)
+    if not detail:
+        return None
+    basic = detail.get("disclosureBasic") or {}
+    changed = 1 if bool(basic.get("isChanged")) else 0
+    d1.execute(
+        """UPDATE kap_notifications
+           SET mkk_member_id = ?, is_changed = ?, related_disclosure_oid = ?,
+               disclosure_body = COALESCE(?, disclosure_body),
+               updated_at = datetime('now')
+           WHERE disclosure_index = ?""",
+        [
+            basic.get("mkkMemberOid"),
+            changed,
+            (detail.get("disclosureDetail") or {}).get("relatedDisclosureIndex")
+            or basic.get("relatedDisclosureOid"),
+            detail.get("disclosureBody") or "",
+            idx,
+        ],
+    )
+    return "changed" if changed else "ok"
+
+
 def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description="KAP pencere ingest")
     p.add_argument("--days", type=int, default=1)
@@ -116,6 +142,7 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--to", type=parse_date, dest="to_date")
     p.add_argument("--no-write", action="store_true", help="sadece çek, yazma")
     p.add_argument("--pdf", action="store_true", help="öncelikli konuların PDF'lerini çek+parse (S1-5)")
+    p.add_argument("--no-detail", action="store_true", help="detay (isChanged/relatedDisclosure) çekimi atla (S1-6)")
     args = p.parse_args(argv)
 
     to = args.to_date or date.today()
@@ -142,12 +169,27 @@ def main(argv: list[str] | None = None) -> None:
 
     wrote = 0
     last_err = None
+    detail_status = {"ok": 0, "changed": 0, "skip": 0}
     for item in items:
         try:
             upsert_notification(d1, item, members)
             wrote += 1
+            if not args.no_detail:
+                idx = str(item.get("disclosureIndex") or "")
+                exists = d1.execute(
+                    "SELECT 1 FROM kap_notifications WHERE disclosure_index = ? AND disclosure_body IS NOT NULL",
+                    [idx],
+                ).get("results")
+                if exists:
+                    detail_status["skip"] += 1
+                    continue  # zaten detay dolu — güncelleme yok
+                status = fetch_detail_updates(client, d1, item)
+                detail_status[status if status else "skip"] += 1
         except Exception as exc:  # noqa: BLE001
             last_err = exc
+
+    if not args.no_detail:
+        print(f"Detay: {detail_status}")
 
     if args.pdf:
         from pdf_pipeline import fetch_and_store

@@ -97,7 +97,13 @@ class KapClient:
             "GET", f"/tr/api/notification/attachment-detail/{disclosure_index}"
         )
         data = resp.json()
-        return data if isinstance(data, dict) and data else None
+        if isinstance(data, list):
+            data = data[0] if data else None
+        if isinstance(data, dict) and data:
+            if "disclosure" in data and isinstance(data["disclosure"], dict):
+                return data["disclosure"]
+            return data
+        return None
 
     # ---- PDF ----
     def bildirim_pdf(self, disclosure_index: str | int) -> bytes:

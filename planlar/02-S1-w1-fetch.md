@@ -56,7 +56,7 @@ KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) **tüm piyasa
 - [x] S1-3 D1 şema + Python->D1 HTTP API katmanı (OAuth refresh; canlı doğrulandı: 14/14 yazıldı, idempotent, UTC dönüşümü)
 - [x] S1-4 Polling orkestrasyonu (pazar saatleri 3dk/15dk, O_EXCL lock + stale, backoff)
 - [x] S1-5 PDF pipeline (BildirimPdf temiz yol + file/download wrapper offset 27; lokalde CRFA örneklerden 24.8K/112.8K karakter doğrulandı)
-- [ ] S1-6 Duplicate / düzeltme işleme
+- [x] S1-6 Duplicate / düzeltme işleme (disclosure_index UNIQUE idempotent; detay çekimi yalnız yeni kayıtlarda — disclosure_body işaretçisi; mkk_member_oid 14/14 doğrulandı)
 - [ ] S1-7 FastAPICloud deploy + health/log
 - [ ] S1-8 Requirements + Dockerfile + CI taslağı
 
