@@ -51,9 +51,9 @@ KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) **tüm piyasa
 - Doğrulama: remote health OK, log rotasyonu.
 
 ## 4. Görev Listesi
-- [ ] S1-1 KAP client (tüm piyasa list/detay/PDF) + VYK client (referans uyarlama)
-- [ ] S1-2 XU100 etiketleme haritası + bist100_members (etiket amaçlı)
-- [ ] S1-3 D1 şema + Python->D1 HTTP API katmanı
+- [x] S1-1 KAP client (tüm piyasa list/detay/PDF) + VYK client (referans uyarlama)
+- [x] S1-2 XU100 etiketleme haritası + bist100_members (etiket amaçlı)
+- [x] S1-3 D1 şema + Python->D1 HTTP API katmanı (OAuth refresh; canlı doğrulandı: 14/14 yazıldı, idempotent, UTC dönüşümü)
 - [ ] S1-4 Polling orkestrasyonu (pazar saatleri, lock)
 - [ ] S1-5 PDF pipeline (java wrapper, cp1252, truncate)
 - [ ] S1-6 Duplicate / düzeltme işleme
