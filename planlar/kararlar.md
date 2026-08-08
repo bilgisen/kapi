@@ -4,7 +4,7 @@ Merkezi karar günlüğü. Her kritik karar tek satır + tarih + gerekçe.
 
 | Tarih | Karar | Seçim | Gerekçe | Kaynak |
 |---|---|---|---|---|
-| 2026-08-08 | K1 Veri kaynağı | A/B test: KAP public JSON API vs MKK VYK | ikisi de denenmeli, çalışan/verimli olan kazanır | S0-4 |
+| 2026-08-08 | K1 Veri kaynağı | KAP public JSON API (auth'suz) kazandı; MKK VYK ulaşılamıyor (gateway apinizer hepsi OpenAPI spec döner, ücretli/üretim aboneliği gerekir) | Spike S0-4: tüm endpoint'ler doğrulandı, özet alanı dolu | docs/spike-kap-api.md |
 | 2026-08-08 | K2 Kapsam | Yalnızca BIST 100 | Yatırımcıların çoğu ilgileniyor; maliyet/yük azalır | Kullanıcı kararı |
 | 2026-08-08 | K3 Önem skoru | Kural tabanlı 1-10 | Deterministik, ucuz, debuggable | Claude notu sağlaması |
 | 2026-08-08 | K4 Düşük skorlu özet | KAP'ın kendi summary metni | Sıfır AI maliyeti, resmi kaynak | Kullanıcı kararı |

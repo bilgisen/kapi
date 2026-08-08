@@ -14,7 +14,7 @@ Ayırt edici değer: AI işleme + güzel tasnif + şirket sayfaları entegrasyon
 
 | # | Karar | Seçim |
 |---|---|---|
-| K1 | Veri kaynağı | A/B: KAP public JSON API (auth'suz) vs MKK VYK API — S0'da her ikisi doğrulanır, çalışan/verimli olan kesinleşir |
+| K1 | Veri kaynağı | **Kesinleşti: KAP public JSON API** (auth'suz) — MKK VYK gateway erişilemiyor (spike raporu) |
 | K2 | Kapsam | Yalnızca BIST 100 üyeleri (XU100 listesi KAP endeks API'den periyodik tazelenir) |
 | K3 | Önem skoru | Kural tabanlı (taksonomi + isLate/PDF varlığı ayarlayıcıları), 1-10 |
 | K4 | Düşük skorlu özet | KAP'ın kendi özeti (AI çağrısı yok); VYK'da özet yoksa "özet yok" etiketi |
@@ -65,10 +65,10 @@ TanStack (mevcut repo): /bildirimler feed + /hisse/$ticker/bildirimler sekmesi +
 
 Durum işaretleri: [x] tamam / [ ] bekliyor
 
-- [ ] S0-1 Repo kurulumu: git init, GitHub push, .gitignore, README
-- [ ] S0-2 planlar/ yapısı + şablon dosyaları + karar kaydı
-- [ ] S0-3 investapi -> oldfiles/ referans kopyası
-- [ ] S0-4 KAP API A/B doğrulama spike (public JSON vs VYK: uç noktalar, PDF, özet alanı) -> K1 kesinleşir
+- [x] S0-1 Repo kurulumu: git init, GitHub push, .gitignore, README
+- [x] S0-2 planlar/ yapısı + şablon dosyaları + karar kaydı
+- [x] S0-3 investapi -> oldfiles/ referans kopyası
+- [x] S0-4 KAP API A/B doğrulama spike (public JSON kazandı; PDF: BildirimPdf temiz + file/download wrapper) -> K1 kesinleşti
 - [ ] S0-5 D1 kapi-db sağlama + Cloudflare token yetkileri + GEMINI_API_KEY
 - [ ] S1-1 KAP client (list/detay/PDF) + VYK client (referans)
 - [ ] S1-2 BIST100 üyelik listesi çekme + bist100_members tablosu

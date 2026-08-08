@@ -35,19 +35,20 @@ Yeni reponun temelini atmak: git kurulumu, plan altyapısı, referans kopyası (
 - Doğrulama: D1 HTTP API ile basit sorgu çalışıyor.
 
 ## 4. Görev Listesi
-- [ ] S0-1 Repo kurulumu: git init, .gitignore, README, GitHub push
-- [ ] S0-2 planlar/ yapısı (bu dosyaların oluşturulması)
-- [ ] S0-3 oldfiles/ kopyası (investapi -> kap/oldfiles)
-- [ ] S0-4 A/B spike: KAP public API test scriptleri (docs/spike-*)
-- [ ] S0-5 A/B spike: MKK VYK client test (investapi referansı)
+- [x] S0-1 Repo kurulumu: git init, .gitignore, README, GitHub push
+- [x] S0-2 planlar/ yapısı (bu dosyaların oluşturulması)
+- [x] S0-3 oldfiles/ kopyası (investapi -> kap/oldfiles)
+- [x] S0-4 A/B spike: KAP public API test (kazandı) -> docs/spike-kap-api.md
+- [x] S0-5 A/B spike: MKK VYK client test (gateway erişilemiyor -> raporlandı)
 - [ ] S0-6 D1 kapi-db sağlama + Python->D1 API token
 - [ ] S0-7 env şablonları (.env.example, wrangler.jsonc)
 
 ## 5. Kararlar
-- K1: İki kaynaktan da veri çekilir; spike sonucunda hangi endpoint'lerin kullanılacağına karar verilecek.
+- K1: KAP public JSON API kazandı (spike raporu docs/spike-kap-api.md). MKK VYK opsiyonel fallback.
+- XU100 üye listesi: Hono index-constituents.json + KAP indices excel (indirildi).
 - oldfiles klasör adı netleştirildi: `oldfiles/`.
 
 ## 6. Kabul Kriterleri
-- [ ] Repo GitHub'da
-- [ ] KAP API spike raporu yazıldı, kaynak kararı verildi
+- [x] Repo GitHub'da
+- [x] KAP API spike raporu yazıldı, kaynak kararı verildi
 - [ ] D1 yazma/okuma test edildi
