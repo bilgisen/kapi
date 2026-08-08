@@ -109,13 +109,13 @@ def upsert_notification(
     return tickers
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
     p = argparse.ArgumentParser(description="KAP pencere ingest")
     p.add_argument("--days", type=int, default=1)
     p.add_argument("--from-date", type=parse_date, dest="from_date")
     p.add_argument("--to", type=parse_date, dest="to_date")
     p.add_argument("--no-write", action="store_true", help="sadece çek, yazma")
-    args = p.parse_args()
+    args = p.parse_args(argv)
 
     to = args.to_date or date.today()
     from_ = args.from_date or (to - timedelta(days=max(1, args.days - 1)))
