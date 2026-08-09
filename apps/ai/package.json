@@ -1,0 +1,18 @@
+{
+  "name": "kapi-ai",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "W3 kapi-ai — Gemini analiz (otomatik BIST100 skor>=5 + on-demand K11)",
+  "scripts": {
+    "test": "vitest run",
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260801.1",
+    "typescript": "^5.6.0",
+    "vitest": "^2.1.0",
+    "wrangler": "^4.0.0"
+  }
+}

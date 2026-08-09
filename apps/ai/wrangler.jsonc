@@ -1,0 +1,26 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "kapi-ai",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-08",
+  "compatibility_flags": ["nodejs_compat"],
+  "d1_databases": [
+    {
+      "binding": "kapi_db",
+      "database_name": "kapi-db",
+      "database_id": "38321f66-c11e-4ea0-82a8-cbcccf0ec4a4"
+    }
+  ],
+  "kv_namespaces": [
+    {
+      "binding": "kapi_ai_cache",
+      "id": "5fa68e6904db4d30a43100c743540960"
+    }
+  ],
+  "vars": {
+    "MODEL_LOW": "gemini-2.5-flash",
+    "MODEL_HIGH": "gemini-2.5-pro",
+    "DAILY_ANALYZE_LIMIT": "1000",
+    "KV_TTL_SECONDS": "86400"
+  }
+}
