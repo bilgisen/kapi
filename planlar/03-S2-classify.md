@@ -39,7 +39,7 @@ W1'den gelen ham bildirimleri kural tabanlı sınıflandırmak: kategori + önem
 - [x] S2-1 Taksonomi + kural motoru + unit testler (15/15 geçti)
 - [x] S2-2 Skor ayarlayıcılar + UNKNOWN/needs_review fallback
 - [x] S2-3 Ingest endpoint + D1 yazımı + auth (X-Classify-Secret; canlı 14/14 analiz)
-- [~] S2-4 W3 tetikleme + retry/backoff (kod hazır; CLASSIFY_W3_URL env'si S3'te)
+- [x] S2-4 W3 tetikleme + retry/backoff (CLASSIFY_W3_URL+SECRET set; W1→W2→W3 zinciri canlı doğrulandı)
 - [x] S2-5 wrangler.jsonc + deploy konfigürasyonu (https://kapi-classify.paraanaliz.workers.dev)
 
 ## 5. Kararlar

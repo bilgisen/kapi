@@ -1,6 +1,6 @@
 # S3 — W3 AI Analiz Worker (kapi-ai, Cloudflare Worker TS)
 
-- Durum: başlamadı
+- Durum: tamamlandı (S3-1..S3-7 [x])
 - Bağımlılık: S0, S1, S2
 - Repo: kap (apps/ai)
 
@@ -37,13 +37,15 @@ Skor >= 5 olan **BIST100** bildirimleri için Gemini ile Türkçe özet, etki an
 - Doğrulama: aynı bildirim ikinci kez işlenmez.
 
 ## 4. Görev Listesi
-- [ ] S3-1 Prompt mimarisi + JSON şeması + unit testler
-- [ ] S3-2 Gemini client (REST veya SDK — Hono gemini-client referansı)
-- [ ] S3-3 Model tiering (>=8 / 5-7) env ile model adı
-- [ ] S3-4 Trigger + retry + token bütçesi (yalnız BIST100 skor>=5 otomatik)
-- [ ] S3-5 KV cache + D1 yazımı + idempotency
-- [ ] S3-6 On-demand analyze endpoint (K11): POST tetik, cache-first, global limit
-- [ ] S3-7 wrangler.jsonc + deploy + secret (GEMINI_API_KEY)
+- [x] S3-1 Prompt mimarisi + JSON şeması + unit testler (12/12 geçti)
+- [x] S3-2 Gemini client (REST, SDK'sız; hono gemini-client referansı)
+- [x] S3-3 Model tiering (>=8 gemini-2.5-pro env MODEL_HIGH; 5-7 flash MODEL_LOW)
+- [x] S3-4 Trigger + retry + token bütçesi (yalnız BIST100 skor>=5 otomatik; skip doğrulandı)
+- [x] S3-5 KV cache + D1 yazımı + idempotency (KV'de ai_analyze+rate anahtarları görüldü)
+- [x] S3-6 On-demand analyze endpoint (K11): POST tetik, cache-first, günlük limit (2 çağrı canlı; 1645934 ilk /auto ile üretildi, /analyze cache'ten döndü)
+- [x] S3-7 wrangler.jsonc + deploy + secret (GEMINI_API_KEY, W3_SECRET) — https://kapi-ai.paraanaliz.workers.dev
+
+Not: KV key list CLI'da eventual consistency gecikmesi yaşayabilir; worker içi KVNamespace.list() anlık doğru.
 
 ## 5. Kararlar
 - Model adları env'den: MODL_HIGH, MODEL_LOW.
