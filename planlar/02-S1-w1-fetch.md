@@ -58,7 +58,7 @@ KAP kaynağından (A/B sonucuna göre public JSON ve/veya MKK VYK) **tüm piyasa
 - [x] S1-5 PDF pipeline (BildirimPdf temiz yol + file/download wrapper offset 27; lokalde CRFA örneklerden 24.8K/112.8K karakter doğrulandı)
 - [x] S1-6 Duplicate / düzeltme işleme (disclosure_index UNIQUE idempotent; detay çekimi yalnız yeni kayıtlarda — disclosure_body işaretçisi; mkk_member_oid 14/14 doğrulandı)
 - [x] S1-7 FastAPI app: /health, POST /api/cron/refresh (X-Fetch-Secret), /api/sync-state + Dockerfile (yerel test edildi: health ok, sync-state D1'den)
-- [ ] S1-7b FastAPICloud deploy (fastapicloud CLI — kullanıcı hesabı ile; env: .env'deki değerler)
+- [x] S1-7b FastAPICloud deploy: pyproject.toml [tool.fastapi] entrypoint=apps.fetch.app:app, paket import fallback'leri (hata: "default file to run" -> çözüldü); env: D1_ACCESS/REFRESH_TOKEN + CF_ACCOUNT_ID + D1_DATABASE_ID + FASTAPI_SECRET_KEY FastAPI Cloud dashboard'da set edilir
 - [ ] S1-8 Requirements + Dockerfile + CI taslağı
 
 ## 5. Kararlar

@@ -20,8 +20,12 @@ import time
 from datetime import datetime, time as datetime_time
 from pathlib import Path
 
-from d1_client import D1Client
-from fetch_window import main as ingest_window
+try:
+    from apps.fetch.d1_client import D1Client
+    from apps.fetch.fetch_window import main as ingest_window
+except ImportError:
+    from d1_client import D1Client
+    from fetch_window import main as ingest_window
 
 MARKET_INTERVAL = 3 * 60
 FALLBACK_INTERVAL = 15 * 60

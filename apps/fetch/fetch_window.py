@@ -11,8 +11,12 @@ import argparse
 import sys
 from datetime import UTC, date, datetime, timedelta, timezone
 
-from d1_client import D1Client
-from kap_client import KapClient
+try:
+    from apps.fetch.d1_client import D1Client
+    from apps.fetch.kap_client import KapClient
+except ImportError:
+    from d1_client import D1Client
+    from kap_client import KapClient
 
 MAX_WINDOW_DAYS = 2  # 2000 kayıt tavanı; spike: 6144/gün → 1-2 gün güvenli
 

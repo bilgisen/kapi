@@ -1,0 +1,1 @@
+"""apps.fetch paket işaretçisi."""

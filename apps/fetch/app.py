@@ -17,9 +17,14 @@ from datetime import date, timedelta
 
 from fastapi import FastAPI, Header, HTTPException
 
-import config
-from d1_client import D1Client
-from fetch_window import main as ingest_window
+try:
+    from apps.fetch import config
+    from apps.fetch.d1_client import D1Client
+    from apps.fetch.fetch_window import main as ingest_window
+except ImportError:
+    import config
+    from d1_client import D1Client
+    from fetch_window import main as ingest_window
 
 app = FastAPI(title="kapi-fetch", version="0.1.0")
 

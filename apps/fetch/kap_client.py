@@ -17,7 +17,10 @@ from datetime import date
 
 import requests
 
-from config import KAP_BASE, WARMUP_URL
+try:
+    from apps.fetch.config import KAP_BASE, WARMUP_URL
+except ImportError:
+    from config import KAP_BASE, WARMUP_URL
 
 DEFAULT_HEADERS = {
     "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "

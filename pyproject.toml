@@ -1,0 +1,15 @@
+[project]
+name = "kapi"
+version = "0.1.0"
+description = "KAP bildirim platformu — W1 kapi-fetch (FastAPICloud)"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi[standard]>=0.115",
+    "uvicorn>=0.30",
+    "requests>=2.31",
+    "python-dotenv>=1.0",
+    "pdfminer.six>=20240706",
+]
+
+[tool.fastapi]
+entrypoint = "apps.fetch.app:app"

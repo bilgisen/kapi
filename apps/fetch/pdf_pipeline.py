@@ -14,8 +14,12 @@ from __future__ import annotations
 import io
 import logging
 
-from d1_client import D1Client
-from kap_client import KapClient
+try:
+    from apps.fetch.d1_client import D1Client
+    from apps.fetch.kap_client import KapClient
+except ImportError:
+    from d1_client import D1Client
+    from kap_client import KapClient
 
 PRIORITY_KEYWORDS = [
     "temettü",

@@ -17,7 +17,10 @@ from pathlib import Path
 
 import requests
 
-import config
+try:
+    from apps.fetch import config
+except ImportError:
+    import config
 
 OAUTH_TOKEN_URL = "https://dash.cloudflare.com/oauth2/token"
 API_BASE = "https://api.cloudflare.com/client/v4"

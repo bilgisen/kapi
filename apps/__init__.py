@@ -1,0 +1,1 @@
+"""apps ve apps/fetch paket işaretçileri (FastAPICloud kök import için)."""
