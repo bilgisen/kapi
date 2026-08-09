@@ -1,6 +1,6 @@
 # S5 — Frontend (TanStack)
 
-- Durum: başlamadı
+- Durum: tamamlandı (S5-1..S5-5 canlı, deploy 585f00da)
 - Bağımlılık: S4
 - Repo: tanstack (mevcut repo, değişiklik burada yapılır)
 
@@ -47,11 +47,11 @@ Bildirimler için iki ekran: genel feed sayfası (gerçek zamanlı "Bugünün ö
 - Doğrulama: y akses testleri.
 
 ## 4. Görev Listesi
-- [ ] S5-1 Hook'lar ve tipler
-- [ ] S5-2 /bildirimler feed sayfası (tüm bildirimler + BIST100 chip + AI butonu) + nav linki
-- [ ] S5-3 /hisse/:ticker/bildirimler sekmesi (TABS + route)
-- [ ] S5-4 Detay görünümü (/bildirimler/:disclosureId)
-- [ ] S5-5 Ortak bileşenler + durum/mobil iyileştirmeleri
+- [x] S5-1 Hook'lar ve tipler (useKAPData.ts: useKAPFeed/useKAPCompany/useKAPDetail/useKAPAnalyze)
+- [x] S5-2 /bildirimler feed sayfası (tüm bildirimler + BIST100 chip + AI butonu) + nav linki
+- [x] S5-3 /hisse/:ticker/bildirimler sekmesi (TABS + route)
+- [x] S5-4 Detay görünümü (/bildirimler/:disclosureId)
+- [x] S5-5 Ortak bileşenler + durum/mobil iyileştirmeleri
 
 ## 5. Kararlar
 - Route deseni: `/bildirimler` ve `/hisse/:ticker/bildirimler` (jetborsa.com/hisse/ykbnk/bildirimler hedefle).
