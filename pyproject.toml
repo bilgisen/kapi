@@ -17,3 +17,6 @@ dependencies = [
 
 [tool.fastapi]
 entrypoint = "apps.fetch.app:app"
+
+[tool.hatch.build.targets.wheel]
+packages = ["apps"]
