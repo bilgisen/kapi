@@ -1,6 +1,6 @@
 # S2 — W2 Sınıflandırma Worker (kapi-classify, Cloudflare Worker TS)
 
-- Durum: başlamadı
+- Durum: kısmen tamam — S2-1/2/3/5 [x], S2-4 [~] (W3 URL env'si S3'te doldurulacak, tetikleyici kod hazır)
 - Bağımlılık: S0, S1 (kısmen — ingest endpoint'i için W1'in D1 şeması gerekir)
 - Repo: kap (apps/classify)
 
@@ -36,11 +36,11 @@ W1'den gelen ham bildirimleri kural tabanlı sınıflandırmak: kategori + önem
 - Doğrulama: BIST100 skor 5+ bildirim W3 tarafından işlendi; BIST100 dışı işlenmedi.
 
 ## 4. Görev Listesi
-- [ ] S2-1 Taksonomi + kural motoru + unit testler
-- [ ] S2-2 Skor ayarlayıcılar + UNKNOWN/needs_review fallback
-- [ ] S2-3 Ingest endpoint + D1 yazımı + auth
-- [ ] S2-4 W3 tetikleme + retry/backoff
-- [ ] S2-5 wrangler.jsonc + deploy konfigürasyonu
+- [x] S2-1 Taksonomi + kural motoru + unit testler (15/15 geçti)
+- [x] S2-2 Skor ayarlayıcılar + UNKNOWN/needs_review fallback
+- [x] S2-3 Ingest endpoint + D1 yazımı + auth (X-Classify-Secret; canlı 14/14 analiz)
+- [~] S2-4 W3 tetikleme + retry/backoff (kod hazır; CLASSIFY_W3_URL env'si S3'te)
+- [x] S2-5 wrangler.jsonc + deploy konfigürasyonu (https://kapi-classify.paraanaliz.workers.dev)
 
 ## 5. Kararlar
 - Kategoriler Claude notundaki enum temel alındı (kısaltma/İngilizce key, Türkçe etiket).
