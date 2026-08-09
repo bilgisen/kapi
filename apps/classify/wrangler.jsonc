@@ -11,6 +11,12 @@
       "database_id": "38321f66-c11e-4ea0-82a8-cbcccf0ec4a4"
     }
   ],
+  "services": [
+    {
+      "binding": "KAPI_AI",
+      "service": "kapi-ai"
+    }
+  ],
   "vars": {
     "BATCH_LIMIT": "100"
   }

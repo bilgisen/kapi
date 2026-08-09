@@ -145,19 +145,34 @@ async function runAnalysis(
   source: "auto" | "ondemand"
 ): Promise<AnalysisOutput> {
   const index = row.disclosure_index as string;
-  const cached = await env.kapi_ai_cache.get(kvKey(index));
+  let cached: string | null = null;
+  try {
+    cached = await env.kapi_ai_cache.get(kvKey(index));
+  } catch {}
   if (cached) {
-    return JSON.parse(cached) as AnalysisOutput;
+    try {
+      return JSON.parse(cached) as AnalysisOutput;
+    } catch {
+      // Bozuk cache: sil ve yeniden üret (self-heal)
+      try { await env.kapi_ai_cache.delete(kvKey(index)); } catch {}
+    }
   }
   const existing = await env.kapi_db
     .prepare("SELECT summary_tr FROM kap_analysis WHERE disclosure_index = ? AND summary_tr IS NOT NULL")
     .bind(index)
     .first();
   if (existing) {
+    let keyNumbers = "[]";
+    try {
+      keyNumbers = (existing.key_numbers as string | null) ?? "[]";
+      JSON.parse(keyNumbers);
+    } catch {
+      keyNumbers = "[]";
+    }
     const out = {
       summary_tr: existing.summary_tr as string,
       impact_analysis: (existing.impact_analysis as string | null) ?? "",
-      key_numbers: JSON.parse((existing.key_numbers as string | null) ?? "[]") as string[],
+      key_numbers: JSON.parse(keyNumbers) as string[],
       sentiment: ((existing.sentiment as string) ?? "neutral") as AnalysisOutput["sentiment"],
       chatbot_context: (existing.chatbot_context as string | null) ?? "",
       confidence: Number((existing.confidence as number | null) ?? 0.5),
@@ -209,22 +224,28 @@ export default {
 
     // --- /analyze: on-demand (K11) — cache-first, günlük limit ---
     if (url.pathname === "/analyze" && request.method === "POST") {
-      const body = (await request.json()) as { disclosure_index?: string };
-      const index = body?.disclosure_index;
-      if (!index) return Response.json({ error: "disclosure_index gerekli" }, { status: 400 });
-
-      if (await rateLimited(env)) {
-        return Response.json({ error: "günlük analiz limitine ulaşıldı" }, { status: 429 });
-      }
-      const row = await fetchNotification(env, index);
-      if (!row) return Response.json({ error: "bildirim bulunamadı" }, { status: 404 });
-
-      const score = (row.importance_score as number | null) ?? null;
-      const model = modelForScore(env, score ?? 0);
       try {
+        let body: { disclosure_index?: string };
+        try {
+          body = (await request.json()) as { disclosure_index?: string };
+        } catch {
+          return Response.json({ error: "geçersiz JSON body" }, { status: 400 });
+        }
+        const index = body?.disclosure_index;
+        if (!index) return Response.json({ error: "disclosure_index gerekli" }, { status: 400 });
+
+        if (await rateLimited(env)) {
+          return Response.json({ error: "günlük analiz limitine ulaşıldı" }, { status: 429 });
+        }
+        const row = await fetchNotification(env, index);
+        if (!row) return Response.json({ error: "bildirim bulunamadı" }, { status: 404 });
+
+        const score = (row.importance_score as number | null) ?? null;
+        const model = modelForScore(env, score ?? 0);
         const output = await runAnalysis(env, row, score, model, "ondemand");
         return Response.json({ ok: true, model, ...output });
       } catch (err) {
+        console.error(`[analyze] Hata:`, err);
         return Response.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
       }
     }

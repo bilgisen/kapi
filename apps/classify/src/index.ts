@@ -1,4 +1,4 @@
-/**
+﻿/**
  * S2-3/4: kapi-classify Worker (Cloudflare).
  *
  * - POST /ingest     -> W1 tarafından çağrılır: bekleyen bildirimleri D1'den okur,
@@ -13,6 +13,7 @@ import { classify, CATEGORY_LABELS, type Classification } from "./rules";
 
 interface Env {
   kapi_db: D1Database;
+  KAPI_AI?: Fetcher;
   CLASSIFY_SECRET: string;
   /** W3 AI-analiz worker URL'si (S3'te doldurulacak; boşsa tetikleme atlanır) */
   CLASSIFY_W3_URL?: string;
@@ -28,6 +29,7 @@ interface IngestionResult {
   w3_skipped: number;
   errors: number;
   byCategory: Record<string, number>;
+  w3_error?: string;
 }
 
 const MAX_W3_RETRIES = 3;
@@ -47,21 +49,28 @@ async function triggerW3(env: Env, notification: Record<string, unknown>, classi
   const headers: Record<string, string> = { "content-type": "application/json" };
   if (env.CLASSIFY_W3_SECRET) headers["x-w3-secret"] = env.CLASSIFY_W3_SECRET;
 
-  let lastErr: Error | null = null;
+  const w3Fetch = env.KAPI_AI
+    ? (init: RequestInit) => env.KAPI_AI!.fetch("https://kapi-ai/auto", init)
+    : (init: RequestInit) => fetch(env.CLASSIFY_W3_URL!, init);
+
   for (let attempt = 1; attempt <= MAX_W3_RETRIES; attempt++) {
     try {
-      await fetchJson(env.CLASSIFY_W3_URL, {
+      const res = await w3Fetch({
         method: "POST",
         headers,
         body: JSON.stringify({ notification, classification }),
       });
-      return true;
+      if (res.status === 200) return true;
+      const body = (await res.clone().text()).slice(0, 200);
+      throw new Error(`HTTP ${res.status} ${body}`);
     } catch (err) {
-      lastErr = err instanceof Error ? err : new Error(String(err));
-      if (attempt < MAX_W3_RETRIES) await sleep(250 * 2 ** attempt);
+      if (attempt === MAX_W3_RETRIES) {
+        const msg = err instanceof Error ? err.message : String(err);
+        throw new Error(`W3 tetikleme başarısız (${notification.disclosure_index}): ${msg} [binding:${Boolean(env.KAPI_AI) ? "var" : "yok"}]`);
+      }
+      await sleep(250 * 2 ** attempt);
     }
   }
-  console.error("W3 tetikleme başarısız:", notification.disclosure_index, lastErr?.message);
   return false;
 }
 
@@ -134,13 +143,19 @@ async function ingest(env: Env): Promise<IngestionResult> {
         if (!env.CLASSIFY_W3_URL) {
           result.w3_skipped += 1;
         } else {
+          try {
           const ok = await triggerW3(env, row as Record<string, unknown>, classification);
           if (ok) result.w3_triggered += 1;
           else result.w3_failed += 1;
+        } catch (err) {
+          result.w3_failed += 1;
+          result.w3_error = err instanceof Error ? err.message : String(err);
         }
+      }
       }
       result.processed += 1;
     } catch (err) {
+      console.error(new Error(err as string).message);
       result.errors += 1;
       console.error("ingest satır hatası:", row.disclosure_index, err);
     }
