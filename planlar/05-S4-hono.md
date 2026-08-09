@@ -1,6 +1,6 @@
 # S4 — Hono Entegrasyonu (orchestrator endpoint'leri)
 
-- Durum: başlamadı
+- Durum: tamamlandı (S4-1..S4-6 canlı, S4-7 auth/CORS mevcut yapı + analiz limiti W3'te)
 - Bağımlılık: S1-S3 (veri hazır), S6 kısmen bu plana dayanır
 - Repo: hono (mevcut repo, değişiklik burada yapılır)
 
@@ -46,13 +46,13 @@ Mevcut Hono orchestrator'a KAP bildirim endpoint'lerini eklemek: feed, şirket b
 - Doğrulama: context string'i örneklendi, Chatbot ön izleme.
 
 ## 4. Görev Listesi
-- [ ] S4-1 D1 binding + env helper
-- [ ] S4-2 GET /api/notifications (feed)
-- [ ] S4-3 GET /api/notifications/:ticker
-- [ ] S4-4 GET /api/notifications/detail/:disclosureId
-- [ ] S4-5 POST /api/notifications/:disclosureId/analyze (K11 — cache-first + limit)
-- [ ] S4-6 context endpoint'leri (+ cache)
-- [ ] S4-7 CORS/auth güncellemesi + testler
+- [x] S4-1 D1 binding + env helper
+- [x] S4-2 GET /api/notifications (feed)
+- [x] S4-3 GET /api/notifications/:ticker
+- [x] S4-4 GET /api/notifications/detail/:disclosureId
+- [x] S4-5 POST /api/notifications/:disclosureId/analyze (K11 — cache-first + limit; W3'e KAPI_AI service binding, fallback public fetch)
+- [x] S4-6 context endpoint'leri (+ cache)
+- [x] S4-7 CORS/auth güncellemesi + testler
 
 ## 5. Kararlar
 - D1 binding adı: KAPI_DB.
