@@ -190,6 +190,14 @@ export const CLASSIFICATION_RULES: Rule[] = [
     baseImportance: 4,
     timeHorizon: null,
   },
+  // --- Devre kesici (DKB) — fiyat limit hareketi ---
+  {
+    category: "SPECIAL_EVENT",
+    classes: ["DKB"],
+    subjects: ["devre kesici"],
+    baseImportance: 6,
+    timeHorizon: "SHORT",
+  },
   // --- Yönetici/insider pay alım satımı ---
   {
     category: "INSIDER_TRADING",

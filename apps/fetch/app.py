@@ -30,6 +30,10 @@ app = FastAPI(title="kapi-fetch", version="0.1.0")
 
 REFRESH_SECRET = os.getenv("FASTAPI_SECRET_KEY", "change-me")
 
+# S2: W2 (kapi-classify) entegrasyonu — refresh sonrası otomatik sınıflandırma
+CLASSIFY_URL = os.getenv("CLASSIFY_URL", "")
+CLASSIFY_SECRET = os.getenv("CLASSIFY_SECRET", "")
+
 
 def _sync_state() -> dict | None:
     try:
@@ -66,11 +70,27 @@ def sync_state() -> dict:
 
 
 def _run_refresh() -> dict:
+    result: dict = {}
     try:
         ingest_window(["--days", "2"])
-        return {"ok": True}
+        result["ok"] = True
     except Exception as exc:  # noqa: BLE001
         return {"ok": False, "error": str(exc)}
+    if CLASSIFY_URL:
+        try:
+            import requests
+
+            res = requests.post(
+                CLASSIFY_URL.rstrip("/") + "/ingest",
+                headers={"X-Classify-Secret": CLASSIFY_SECRET},
+                timeout=120,
+            )
+            result["classify"] = "ok" if res.ok else f"http_{res.status_code}"
+            if res.ok:
+                result["classify_result"] = res.json()
+        except Exception as exc:  # noqa: BLE001
+            result["classify"] = f"error: {exc}"
+    return result
 
 
 @app.post("/api/cron/refresh")

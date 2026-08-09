@@ -72,6 +72,13 @@ describe("classify — belirli konular", () => {
     expect(r.category).toBe("SPECIAL_EVENT");
   });
 
+  it("Devre kesici (DKB) -> SPECIAL_EVENT, skor 6", () => {
+    const r = classify({ disclosureClass: "DKB", subject: "Pay Bazında Devre Kesici Bildirimi" });
+    expect(r.category).toBe("SPECIAL_EVENT");
+    expect(r.importanceScore).toBe(6);
+    expect(r.needsReview).toBe(false);
+  });
+
   it("BIST100 eşiği: skor>=5 (W3 adayı)", () => {
     const r = classify({ subject: "Finansal Rapor" });
     expect(r.importanceScore).toBe(7);
