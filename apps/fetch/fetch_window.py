@@ -222,7 +222,22 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--no-detail", action="store_true", help="detay (isChanged/relatedDisclosure) çekimi atla (S1-6)")
     args = p.parse_args(argv)
 
-    to = args.to_date or date.today()
+    to = args.to_date
+    if to is None:
+        # S10-7: FastAPICloud container saat kaymasına karşı (sistem saati 2 gün geri
+        # kalabiliyor) — sistem saati yerine D1'deki son bildirim gününden devam et.
+        # Tablo boşsa veya sorgu hataysa sistem saati kullanılır.
+        try:
+            probe = D1Client()
+            m = probe.execute(
+                "SELECT MAX(publish_date) AS m FROM kap_notifications"
+            ).get("results")
+            if m and m[0].get("m"):
+                to = parse_date(m[0]["m"][:10]) + timedelta(days=1)
+            else:
+                to = date.today()
+        except Exception:
+            to = date.today()
     from_ = args.from_date or (to - timedelta(days=max(1, args.days - 1)))
     if (to - from_).days + 1 > MAX_WINDOW_DAYS:
         print(f"Uyarı: pencere {MAX_WINDOW_DAYS} günden büyük — tavan riski")
