@@ -28,6 +28,9 @@ except ImportError:
 
 app = FastAPI(title="kapi-fetch", version="0.1.0")
 
+# S10-6: deploy sürüm işareti — health'ten hangi kodun yayında olduğu izlenir
+APP_VERSION = os.getenv("APP_VERSION", "2026-08-13b")
+
 REFRESH_SECRET = os.getenv("FASTAPI_SECRET_KEY", "change-me")
 
 # S2: W2 (kapi-classify) entegrasyonu — refresh sonrası otomatik sınıflandırma
@@ -56,6 +59,7 @@ def health() -> dict:
     return {
         "status": "ok" if db_ok else "degraded",
         "service": "kapi-fetch",
+        "version": APP_VERSION,
         "db": "ok" if db_ok else db_err,
         "sync_state": _sync_state(),
     }
@@ -72,6 +76,15 @@ def sync_state() -> dict:
 def _run_refresh() -> dict:
     result: dict = {}
     try:
+        # S10-6: koşu başlangıç işareti — thread başladıysa health'te "RUNNING" görünür
+        try:
+            D1Client().execute(
+                """INSERT INTO kap_sync_state (id, last_error, updated_at)
+                   VALUES (1, 'RUNNING', datetime('now'))
+                   ON CONFLICT(id) DO UPDATE SET last_error = 'RUNNING', updated_at = datetime('now')"""
+            )
+        except Exception:
+            pass
         # S10-5: K3 adayları için PDF otomatik çekimi (öncelikli konular, idempotent,
         # koşu başına 30 deneme — cron 10dk'da sığsın; kalanlar sonraki koşularda dolar)
         ingest_window(["--days", "2", "--pdf", "--pdf-max", "30"])
