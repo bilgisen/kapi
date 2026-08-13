@@ -56,6 +56,54 @@ export type TimeHorizon = "SHORT" | "MEDIUM" | "LONG" | null;
 
 export type ScoreLabel = "KRİTİK" | "ÇOK_ÖNEMLİ" | "ÖNEMLİ" | "RUTİN";
 
+/** S10-2: Analiz katmanı — 2 = kısa AI özeti (flash), 3 = derin analiz (pro+PDF) */
+export type Layer = 2 | 3;
+
+/** S10-2: Kriz/eskalasyon anahtar kelimeleri — eşleşirse skoru bypass edip K3'e atla */
+export const ESCALATION_KEYWORDS: string[] = [
+  "iflas",
+  "iflas erteleme",
+  "spk soruşturma",
+  "spk ceza",
+  "el koyma",
+  "işlem durdurma",
+  "yönetim kurulu istifa",
+  "genel müdür istifa",
+  "kredi notu düşür",
+  "kredi notu indir",
+  "delist",
+  "kotadan çık",
+  "kontrolün devri",
+  "kontrol devri",
+  "kayyum",
+  "haciz",
+  "aciz",
+  "faaliyet durdurma",
+  "üretim durdurma",
+  "ceza mahkemesi",
+  "imtiyaz",
+  "zaman aşımına uğradı",
+  "mali tablo reddi",
+  "bağımsız denetim reddi",
+  "olumsuz görüş",
+  "şarta bağlı görüş",
+  "ihraç iptali",
+  "kayıtlı sermaye tavanı iptali",
+];
+
+/** S10-1: Kategori bazlı zorunlu minimum katman — skor ne olursa olsun en az K2 */
+export const CATEGORY_MIN_LAYER: Partial<Record<CategoryKey, Layer>> = {
+  FINANCIAL_REPORT: 2,
+  CAPITAL_INCREASE: 2,
+  DIVIDEND: 2,
+  MERGER_ACQUISITION: 3,
+  BOND_ISSUE: 2,
+  AUDIT: 2,
+  CREDIT_RATING: 3,
+  MAJOR_SHAREHOLDER: 2,
+  LEGAL: 3,
+};
+
 export interface Rule {
   category: CategoryKey;
   /** disclosure_class kodları (KAP: FR, DG, ODA, STT, ...) */
@@ -335,4 +383,41 @@ export function classify(input: NotificationInput): Classification {
     needsReview: false,
     matchedRule: rule.category,
   };
+}
+
+/**
+ * S10-2: Analiz katmanı kararı (K2/K3).
+ * Öncelik: eskalasyon kelimesi > kategori zorunlu min katman > skor eşiği (>=8 -> K3).
+ * K1 (şablon) eşleşmesi çağıran tarafta (ingest) layer'dan önce kontrol edilir.
+ */
+export function computeLayer(
+  input: NotificationInput,
+  classification: Classification
+): Layer {
+  const bodyText = normalize(
+    [input.subject, input.title, input.summary, input.disclosureBody]
+      .filter(Boolean)
+      .join(" ")
+  );
+  const escalationHits = ESCALATION_KEYWORDS.filter((k) => {
+    const nk = normalize(k);
+    return nk.length > 0 && bodyText.includes(nk);
+  });
+  if (escalationHits.length > 0) return 3;
+  const minLayer = CATEGORY_MIN_LAYER[classification.category] ?? 2;
+  if (classification.importanceScore >= 8) return 3;
+  return minLayer;
+}
+
+/** S10-2: eskalasyon kelime eşleşme sayısı (istatistik/debug) */
+export function countEscalationHits(input: NotificationInput): number {
+  const bodyText = normalize(
+    [input.subject, input.title, input.summary, input.disclosureBody]
+      .filter(Boolean)
+      .join(" ")
+  );
+  return ESCALATION_KEYWORDS.filter((k) => {
+    const nk = normalize(k);
+    return nk.length > 0 && bodyText.includes(nk);
+  }).length;
 }

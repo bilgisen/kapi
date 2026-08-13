@@ -31,6 +31,8 @@ interface Env {
 interface AutoRequest {
   notification: Record<string, unknown>;
   classification?: { importanceScore?: number; category?: string } | null;
+  /** S10-2: 2 = kısa AI (flash), 3 = derin (pro). Yoksa skor >= 8 -> pro. */
+  layer?: 2 | 3;
 }
 
 const KV_PREFIX = "ai:analyze:";
@@ -77,8 +79,15 @@ async function getTickers(env: Env, index: string): Promise<string[]> {
 }
 
 function modelForScore(env: Env, score: number): string {
-  if (score >= 8) return env.MODEL_HIGH ?? "gemini-2.5-pro";
+  if (score >= 8) return env.MODEL_HIGH ?? "gemini-3.1-pro-preview";
   return env.MODEL_LOW ?? "gemini-2.5-flash";
+}
+
+/** S10-2: layer varsa o karar verir; yoksa eski skor eşiği (>=8 -> pro) korunur. */
+function modelForLayer(env: Env, score: number, layer?: 2 | 3): string {
+  if (layer === 3) return env.MODEL_HIGH ?? "gemini-3.1-pro-preview";
+  if (layer === 2) return env.MODEL_LOW ?? "gemini-2.5-flash";
+  return modelForScore(env, score);
 }
 
 function toAnalysisInput(row: Record<string, unknown>, tickers: string[], score: number | null): AnalysisInput {
@@ -158,7 +167,11 @@ async function runAnalysis(
     }
   }
   const existing = await env.kapi_db
-    .prepare("SELECT summary_tr FROM kap_analysis WHERE disclosure_index = ? AND summary_tr IS NOT NULL")
+    .prepare(
+      `SELECT summary_tr FROM kap_analysis
+       WHERE disclosure_index = ? AND summary_tr IS NOT NULL
+         AND source IN ('auto', 'ondemand')`
+    )
     .bind(index)
     .first();
   if (existing) {
@@ -215,8 +228,9 @@ export default {
         return Response.json({ skipped: true, reason: "otomatik kapsam dışı (BIST100 skor>=5 gerekli)" });
       }
       try {
-        const output = await runAnalysis(env, row, score, modelForScore(env, score), "auto");
-        return Response.json({ ok: true, model: modelForScore(env, score), ...output });
+        const model = modelForLayer(env, score, body.layer);
+        const output = await runAnalysis(env, row, score, model, "auto");
+        return Response.json({ ok: true, model, layer: body.layer ?? null, ...output });
       } catch (err) {
         return Response.json({ error: err instanceof Error ? err.message : String(err) }, { status: 500 });
       }

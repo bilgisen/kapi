@@ -1,0 +1,16 @@
+{
+  "name": "kapi-cron",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "S7-1 kapi-cron — W1 tazeleme zamanlayıcısı (Cloudflare Worker)",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260801.1",
+    "typescript": "^5.6.0",
+    "wrangler": "^4.0.0"
+  }
+}

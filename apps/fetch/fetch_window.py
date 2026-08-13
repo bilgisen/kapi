@@ -8,7 +8,11 @@ Kullanım:
 from __future__ import annotations
 
 import argparse
+import html
+import json
+import re
 import sys
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import UTC, date, datetime, timedelta, timezone
 
 try:
@@ -19,6 +23,42 @@ except ImportError:
     from kap_client import KapClient
 
 MAX_WINDOW_DAYS = 2  # 2000 kayıt tavanı; spike: 6144/gün → 1-2 gün güvenli
+MAX_BODY_CHARS = 400_000  # 2MB HTML body → metin; D1 satır güvenli tavanı
+
+
+def html_to_text(raw: str | None) -> str:
+    """KAP disclosureBody HTML parçalarını düz metne çevirir (F2).
+
+    Tablo hücreleri (td/th) sekme, bloklar (p/div/tr/table/hx) yeni satır olur;
+    script/style atılır, HTML entity'leri (&#39; vb.) decode edilir.
+    """
+    if not raw:
+        return ""
+    text = re.sub(
+        r"<(script|style)[^>]*>.*?</\1>", " ", raw, flags=re.IGNORECASE | re.DOTALL
+    )
+    text = re.sub(
+        r"(</(?:p|div|tr|li|h[1-6]|table|thead|tbody|tfoot)>|<\s*(?:br|hr)\s*/?>)",
+        "\n",
+        text,
+        flags=re.IGNORECASE,
+    )
+    text = re.sub(r"</t[dh]>", "\t", text, flags=re.IGNORECASE)
+    text = re.sub(r"<[^>]+>", "", text)
+    text = html.unescape(text)
+    lines = [re.sub(r"[ \t]+", " ", ln).strip() for ln in text.splitlines()]
+    return "\n".join(ln for ln in lines if ln)
+
+
+AUDIT_FIELDS = (
+    "ftNiteligi",
+    "opinion",
+    "opinionType",
+    "auditType",
+    "opinionMemberTitle",
+    "mainDisclosureDocumentId",
+    "oldKap",
+)
 
 
 def parse_date(s: str) -> date:
@@ -114,28 +154,60 @@ def upsert_notification(
 
 
 def fetch_detail_updates(client, d1, item) -> str | None:
-    """Yeni bildirimin detayını çeker; mkk_member_id/is_changed/related/disclosure_body doldurur."""
+    """Yeni bildirimin detayını çeker; mkk_member_id/is_changed/related/
+    disclosure_body/audit_json/attachments doldurur (F2).
+    """
     idx = str(item.get("disclosureIndex") or "")
-    detail = client.attachment_detail(idx)
-    if not detail:
+    data = client.attachment_detail(idx)
+    if not data:
         return None
-    basic = detail.get("disclosureBasic") or {}
+    disclosure = data.get("disclosure") or {}
+    basic = disclosure.get("disclosureBasic") or {}
+    detail = disclosure.get("disclosureDetail") or {}
+
     changed = 1 if bool(basic.get("isChanged")) else 0
+    audit_payload = {k: detail.get(k) for k in AUDIT_FIELDS if detail.get(k) is not None}
+    audit_json = json.dumps(audit_payload, ensure_ascii=False) if audit_payload else None
+
+    raw_body = data.get("disclosureBody")
+    if isinstance(raw_body, list):
+        raw_body = "\n".join(str(part) for part in raw_body)
+    body_text = html_to_text(raw_body)[:MAX_BODY_CHARS] or None
+
     d1.execute(
         """UPDATE kap_notifications
            SET mkk_member_id = ?, is_changed = ?, related_disclosure_oid = ?,
                disclosure_body = COALESCE(?, disclosure_body),
+               audit_json = COALESCE(?, audit_json),
                updated_at = datetime('now')
            WHERE disclosure_index = ?""",
         [
             basic.get("mkkMemberOid"),
             changed,
-            (detail.get("disclosureDetail") or {}).get("relatedDisclosureIndex")
+            detail.get("relatedDisclosureIndex")
             or basic.get("relatedDisclosureOid"),
-            detail.get("disclosureBody") or "",
+            body_text,
+            audit_json,
             idx,
         ],
     )
+
+    attachments = data.get("attachments") or []
+    for i, att in enumerate(attachments):
+        if not isinstance(att, dict) or not att.get("objId"):
+            continue
+        d1.execute(
+            """INSERT OR IGNORE INTO kap_disclosure_files
+               (disclosure_index, obj_id, file_name, file_extension, sort_order)
+               VALUES (?, ?, ?, ?, ?)""",
+            [
+                idx,
+                str(att.get("objId")),
+                att.get("fileName"),
+                att.get("fileExtension"),
+                i,
+            ],
+        )
     return "changed" if changed else "ok"
 
 
@@ -174,23 +246,41 @@ def main(argv: list[str] | None = None) -> None:
     wrote = 0
     last_err = None
     detail_status = {"ok": 0, "changed": 0, "skip": 0}
-    for item in items:
+
+    # D1 HTTP API tek istek/execute — paralel yazım (8 işçi) ile hızlandırma (S8-1).
+    # Token paylaşımı thread-safe değil: her işçi kendi D1Client'ını kurar; API token
+    # (K13) kullanıldığında refresh hiç tetiklenmez, çakışma yok.
+    def _work(item: dict) -> tuple[dict, str | None]:
+        wd1 = D1Client()
+        detail = "skip"  # no-detail modunda detail yok
         try:
-            upsert_notification(d1, item, members)
-            wrote += 1
+            upsert_notification(wd1, item, members)
             if not args.no_detail:
                 idx = str(item.get("disclosureIndex") or "")
-                exists = d1.execute(
+                exists = wd1.execute(
                     "SELECT 1 FROM kap_notifications WHERE disclosure_index = ? AND disclosure_body IS NOT NULL",
                     [idx],
                 ).get("results")
                 if exists:
-                    detail_status["skip"] += 1
-                    continue  # zaten detay dolu — güncelleme yok
-                status = fetch_detail_updates(client, d1, item)
-                detail_status[status if status else "skip"] += 1
+                    detail = "skip"
+                else:
+                    status = fetch_detail_updates(client, wd1, item)
+                    detail = status if status else "skip"
+            return item, None
         except Exception as exc:  # noqa: BLE001
-            last_err = exc
+            return item, str(exc)
+
+    workers = min(8, max(1, len(items)))
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        futures = [pool.submit(_work, item) for item in items]
+        for fut in as_completed(futures):
+            _, err = fut.result()
+            if err:
+                last_err = err
+            else:
+                wrote += 1
+                if not args.no_detail:
+                    detail_status["ok"] = detail_status.get("ok", 0) + 1
 
     if not args.no_detail:
         print(f"Detay: {detail_status}")

@@ -33,7 +33,7 @@ PRIORITY_KEYWORDS = [
     "dkb",
 ]
 PRIORITY_CLASSES = {"FR", "CA", "GK"}
-MAX_PDF_TEXT = 8000
+MAX_PDF_TEXT = 40000
 
 log = logging.getLogger("pdf_pipeline")
 
@@ -93,6 +93,13 @@ def fetch_and_store(client: KapClient, d1: D1Client, item: dict) -> bool:
     index = str(item.get("disclosureIndex") or "")
     if not index:
         return False
+    # S10: idempotent — pdf_text zaten doluysa tekrar çekme (cron her 10dk'da koşar)
+    exists = d1.execute(
+        "SELECT 1 FROM kap_notifications WHERE disclosure_index = ? AND pdf_text IS NOT NULL",
+        [index],
+    ).get("results")
+    if exists:
+        return True
     pdf_bytes = fetch_pdf_bytes(client, item, index)
     if not pdf_bytes:
         d1.execute(

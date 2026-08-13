@@ -92,6 +92,8 @@ class D1Client:
         self.token_path.write_text(text, encoding="utf-8")
 
     def refresh(self) -> None:
+        if not self.refresh_token:
+            raise D1Error("Refresh token yok — D1_ACCESS_TOKEN API token (cfut_) olmalı (K13)")
         resp = requests.post(
             OAUTH_TOKEN_URL,
             data={
@@ -131,7 +133,9 @@ class D1Client:
             resp = requests.post(
                 self._endpoint(), headers=self._headers(), json=payload, timeout=30
             )
-            if resp.status_code == 401 and attempt == 0 and self.auto_refresh:
+            # K13: API token (cfut_) 401 üretmez; OAuth token'da 401 -> refresh.
+            is_api_token = bool(self.access_token and self.access_token.startswith("cfut_"))
+            if resp.status_code == 401 and attempt == 0 and self.auto_refresh and not is_api_token:
                 self.refresh()
                 continue
             if resp.status_code != 200:

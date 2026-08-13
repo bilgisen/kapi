@@ -62,6 +62,20 @@ TanStack (mevcut repo): /bildirimler feed + /hisse/$ticker/bildirimler sekmesi +
 | S5 | Frontend (TanStack) | S4 | 5 | tanstack |
 | S6 | Chatbot Entegrasyonu | S4, S5 | 4 | hono+tanstack |
 | S7 | Operasyon & Yayın | tümü | 4 | kap+hono |
+| S8 | Strateji-0: Operasyonel Sağlamlaştırma | S7 | 3 | kap |
+| S9 | Strateji-1: Şablon Özet Motoru (K1) | S8 | 2 | kap |
+| S10 | Strateji-2: Hibrit Eşik + Katmanlı AI (K2/K3) | S9 | 3 | kap |
+| S11 | Strateji-3: Gün Sonu Sentez (K4) | S10 | 4 | kap+hono+tanstack |
+| S12 | Strateji-4: Takip Listesi | S10 | 3 | hono+tanstack |
+
+## 4b. Strateji Felsefesi (S8+)
+
+Kaynak: Claude strateji danışmanlığı (2026-08-13). Prensip: "deterministik sınıflandırma → LLM yalnızca anlatım yapar" (KAP zincirinde de geçerli).
+
+- **Katmanlı mimari:** K0 kural motoru (ücretsiz) → K1 şablon özet (LLM'siz, regex, ~%40-60 hacim) → K2 kısa AI özeti (flash, subject+body) → K3 derin analiz (pro, PDF'li, ~%10-15 hacim) → K4 gün sonu sentez (deterministik seçim + LLM anlatım).
+- **Hibrit filtreleme:** kategori bazlı zorunlu min katman + kriz/eskalasyon kelime listesi (K3'e atlar) + sınır bölgesi (skor 4-6) için ucuz ikinci görüş (opsiyonel). Yanlış negatif (kaçırmak) > yanlış pozitif (gereksiz analiz).
+- **PDF stratejisi:** yalnızca K3 ve yalnızca sayı-ağırlıklı kategoriler; ham PDF metni değil, ayıklanmış içerik/ilk 8K karakter LLM'e gider.
+- **Kullanıcı davranışı geri beslemesi:** "AI analizi göster" tıklama oranı kategori/skor bazında loglanır; kural motoru periyodik yeniden kalibre edilir (S10 faz 3).
 
 ## 5. Master Task Listesi
 
@@ -102,10 +116,24 @@ Durum işaretleri: [x] tamam / [ ] bekliyor
 - [ ] S6-2 pageContextSuggestions + suggestion'lar
 - [ ] S6-3 Sohbet yönlendirmeleri ("bugün ne oldu?", şirket soruları)
 - [ ] S6-4 JetToken/usage metering (opsiyonel)
-- [ ] S7-1 Cron senkronu + W1 polling
-- [ ] S7-2 Monitoring: hata oranı, token maliyet, sync durumu
-- [ ] S7-3 Canlı yayın (alan adı, CORS, ölçek)
-- [ ] S7-4 Runbook + README + belgeleme
+- [x] S7-1 Cron senkronu + W1 polling
+- [x] S7-2 Monitoring: hata oranı, token maliyet, sync durumu
+- [x] S7-3 Canlı yayın (alan adı, CORS, ölçek)
+- [x] S7-4 Runbook + README + belgeleme
+- [ ] S8-1 Backfill 10-13.08 tamamlama + doğrulama
+- [ ] S8-2 Token kalıcılığı (API token) + cron izleme
+- [x] S8-3 Veri kalitesi ölçümü (pdf_text/body/summary kapsamı) — 1600 kayıt, %100 body, 512 template
+- [x] S9-1 Şablon motoru (W2) + ilk 10-15 kalıp
+- [x] S9-2 Gerçek veride kapsam ölçümü + kalıp genişletme — %32 kapsam, Faz 2 ile hedef %40+
+- [x] S10-1 Kategori bazlı zorunlu katman + eskalasyon listesi
+- [x] S10-2 W3 layer parametresi (K2 flash / K3 pro+pdf)
+- [x] S10-3 W1 otomatik PDF çekimi (K3 adayları)
+- [ ] S11-1 W3 /daily deterministik seçim + LLM anlatım
+- [ ] S11-2 Hono /api/daily + KV cache
+- [ ] S11-3 TanStack günlük rapor kartı
+- [ ] S11-4 Cron tetik (TR 18:30)
+- [ ] S12-1 localStorage takip listesi + Takipte sekmesi
+- [ ] S12-2 Feed vurgusu + "hissemi etkiler mi" filtre
 
 ## 6. Riskler & Notlar
 

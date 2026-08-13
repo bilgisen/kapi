@@ -103,8 +103,6 @@ class KapClient:
         if isinstance(data, list):
             data = data[0] if data else None
         if isinstance(data, dict) and data:
-            if "disclosure" in data and isinstance(data["disclosure"], dict):
-                return data["disclosure"]
             return data
         return None
 

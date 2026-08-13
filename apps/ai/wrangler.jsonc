@@ -19,7 +19,7 @@
   ],
   "vars": {
     "MODEL_LOW": "gemini-2.5-flash",
-    "MODEL_HIGH": "gemini-2.5-pro",
+    "MODEL_HIGH": "gemini-3.1-pro-preview",
     "DAILY_ANALYZE_LIMIT": "1000",
     "KV_TTL_SECONDS": "86400"
   }

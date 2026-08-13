@@ -1,5 +1,8 @@
 -- S1-3: kapi-db şema (D1) — idempotent
 -- Çalıştırma: npx wrangler d1 execute kapi-db --remote --file apps/fetch/schema.sql
+-- Not: F3 migration (mevcut DB'de audit_json kolonu) idempotent DEĞİLDİR —
+--       bir kez elle çalıştırıldı:
+--   npx wrangler d1 execute kapi-db --remote --command="ALTER TABLE kap_notifications ADD COLUMN audit_json TEXT;"
 
 CREATE TABLE IF NOT EXISTS kap_notifications (
     disclosure_index    TEXT PRIMARY KEY,
@@ -15,6 +18,7 @@ CREATE TABLE IF NOT EXISTS kap_notifications (
     is_late             INTEGER DEFAULT 0,
     is_changed          INTEGER DEFAULT 0,
     related_disclosure_oid TEXT,
+    audit_json           TEXT,                -- F2: disclosureDetail meta (denetim/görüş)
     attachment_count    INTEGER DEFAULT 0,
     modify_status       TEXT,
     is_bist100          INTEGER DEFAULT 0,   -- K2: BIST100 etiketi
@@ -28,6 +32,15 @@ CREATE TABLE IF NOT EXISTS notification_companies (
     disclosure_index TEXT NOT NULL,
     ticker           TEXT NOT NULL,
     PRIMARY KEY (disclosure_index, ticker)
+);
+
+CREATE TABLE IF NOT EXISTS kap_disclosure_files (
+    disclosure_index TEXT NOT NULL,
+    obj_id           TEXT NOT NULL,
+    file_name        TEXT,
+    file_extension   TEXT,
+    sort_order       INTEGER DEFAULT 0,
+    PRIMARY KEY (disclosure_index, obj_id)
 );
 
 CREATE TABLE IF NOT EXISTS bist100_members (
