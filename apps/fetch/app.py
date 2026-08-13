@@ -72,8 +72,9 @@ def sync_state() -> dict:
 def _run_refresh() -> dict:
     result: dict = {}
     try:
-        # S10-5: K3 adayları için PDF otomatik çekimi (öncelikli konular, idempotent)
-        ingest_window(["--days", "2", "--pdf"])
+        # S10-5: K3 adayları için PDF otomatik çekimi (öncelikli konular, idempotent,
+        # koşu başına 30 deneme — cron 10dk'da sığsın; kalanlar sonraki koşularda dolar)
+        ingest_window(["--days", "2", "--pdf", "--pdf-max", "30"])
         result["ok"] = True
     except Exception as exc:  # noqa: BLE001
         return {"ok": False, "error": str(exc)}

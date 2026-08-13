@@ -218,6 +218,7 @@ def main(argv: list[str] | None = None) -> None:
     p.add_argument("--to", type=parse_date, dest="to_date")
     p.add_argument("--no-write", action="store_true", help="sadece çek, yazma")
     p.add_argument("--pdf", action="store_true", help="öncelikli konuların PDF'lerini çek+parse (S1-5)")
+    p.add_argument("--pdf-max", type=int, default=0, dest="pdf_max", help="koşu başına max PDF denemesi (cron güvenliği)")
     p.add_argument("--no-detail", action="store_true", help="detay (isChanged/relatedDisclosure) çekimi atla (S1-6)")
     args = p.parse_args(argv)
 
@@ -290,10 +291,16 @@ def main(argv: list[str] | None = None) -> None:
 
         pdf_client = KapClient()
         pdf_done = 0
+        pdf_max = getattr(args, "pdf_max", 0) or 0
+        tried = 0
         for item in items:
+            if pdf_max and tried >= pdf_max:
+                print(f"PDF limiti ({pdf_max}) — kalanlar sonraki koşulara (idempotent)")
+                break
+            tried += 1
             if fetch_and_store(pdf_client, d1, item):
                 pdf_done += 1
-        print(f"PDF işlenen (öncelikli+başarılı): {pdf_done}/{len(items)}")
+        print(f"PDF işlenen (öncelikli+başarılı): {pdf_done}/{tried}")
 
     print(f"D1'e yazılan: {wrote}/{len(items)}" + (f" — son hata: {last_err}" if last_err else ""))
 
