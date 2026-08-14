@@ -16,7 +16,29 @@ export interface Env {
   FETCH_SECRET: string;
 }
 
+/** W1 sync_state'te koşu sürüyorsa (RUNNING) tetiklemeyi atla — birikme önlenir. */
+async function isBusy(env: Env): Promise<boolean> {
+  try {
+    const health = await fetch(env.FETCH_URL.replace(/\/api\/cron\/refresh$/, "/health"), {
+      headers: { "X-Fetch-Secret": env.FETCH_SECRET },
+    });
+    if (!health.ok) return false;
+    const body = (await health.json()) as {
+      sync_state?: { last_error?: string | null } | null;
+    };
+    return body?.sync_state?.last_error === "RUNNING";
+  } catch {
+    return false;
+  }
+}
+
 async function trigger(env: Env): Promise<Response> {
+  if (await isBusy(env)) {
+    return new Response(
+      JSON.stringify({ status: 202, skipped: true, reason: "W1 koşusu sürüyor (RUNNING)" }),
+      { status: 202, headers: { "content-type": "application/json" } }
+    );
+  }
   const resp = await fetch(env.FETCH_URL, {
     method: "POST",
     headers: {

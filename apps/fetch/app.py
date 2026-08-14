@@ -30,6 +30,8 @@ app = FastAPI(title="kapi-fetch", version="0.1.0")
 
 # S10-6: deploy sürüm işareti — health'ten hangi kodun yayında olduğu izlenir
 APP_VERSION = os.getenv("APP_VERSION", "2026-08-13b")
+# S10-8: kod-içi deploy işareti (env'den değil!) — push+otomatik deploy doğrulaması
+DEPLOY_MARK = "2026-08-14a"
 
 REFRESH_SECRET = os.getenv("FASTAPI_SECRET_KEY", "change-me")
 
@@ -60,6 +62,7 @@ def health() -> dict:
         "status": "ok" if db_ok else "degraded",
         "service": "kapi-fetch",
         "version": APP_VERSION,
+        "deploy_mark": DEPLOY_MARK,
         "db": "ok" if db_ok else db_err,
         "sync_state": _sync_state(),
     }
