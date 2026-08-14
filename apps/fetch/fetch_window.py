@@ -302,7 +302,10 @@ def main(argv: list[str] | None = None) -> None:
         print(f"Detay: {detail_status}")
 
     if args.pdf:
-        from pdf_pipeline import fetch_and_store
+        try:
+            from apps.fetch.pdf_pipeline import fetch_and_store
+        except ImportError:
+            from pdf_pipeline import fetch_and_store
 
         pdf_client = KapClient()
         pdf_done = 0
