@@ -69,6 +69,11 @@ TanStack (mevcut repo): /bildirimler feed + /hisse/$ticker/bildirimler sekmesi +
 | S12 | Strateji-4: Takip Listesi | S10 | 3 | hono+tanstack |
 | S13 | Strateji-5: Sistem Kapanışı + Ölçüm | S9-S12 | 4 | kap+hono+tanstack |
 | S14 | Strateji-6: Anonim Web Push (taslak) | S13 | - | hono+tanstack |
+| N0 | KAP Kapanışı (doküman + backlog) | S0-S13 | 2 | kap |
+| N1 | Takip Listesi v2 (sunucu + rol limitleri) | N0 | 4 | hono+tanstack |
+| N2 | Kullanıcı Bildirim Çekirdeği (in-app) | N1 | 5 | hono+tanstack |
+| N3 | Kanal Genişletme: Push + Email (taslak) | N2 | - | hono+tanstack |
+| N4 | Fine Tuning + Yeni Kaynaklar (taslak) | N3 | - | kap+hono |
 
 ## 4b. Strateji Felsefesi (S8+)
 
