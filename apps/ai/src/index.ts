@@ -9,13 +9,21 @@
  * Auth: /analyze halka açık (K11), /auto X-W3-Secret ile korunur.
  */
 
-import { analyzeWithGemini } from "./gemini";
+import { callGemini, analyzeWithGemini } from "./gemini";
 import {
   buildAnalysisPrompt,
   SYSTEM_PROMPT,
   type AnalysisInput,
   type AnalysisOutput,
 } from "./prompt";
+import {
+  buildDailyPrompt,
+  DAILY_SYSTEM_PROMPT,
+  selectDaily,
+  validateDaily,
+  type DailyItemInput,
+  type DailySynthesis,
+} from "./daily";
 
 interface Env {
   kapi_db: D1Database;
@@ -205,11 +213,117 @@ async function runAnalysis(
   return output;
 }
 
+/** S11-3: TR günü -> UTC aralığı. TR = UTC+3, gün sınırı 21:00 UTC. */
+function trDayRange(trDay: string): [string, string] | null {
+  const start = new Date(`${trDay}T00:00:00+03:00`);
+  if (Number.isNaN(start.getTime())) return null;
+  const end = new Date(start.getTime() + 24 * 3600 * 1000);
+  return [start.toISOString(), end.toISOString()];
+}
+
+function trToday(): string {
+  return new Date(Date.now() + 3 * 3600 * 1000).toISOString().slice(0, 10);
+}
+
+/** S11-3: /daily — gün sonu sentez (KV cache gün bazlı, retry 2 deneme). */
+async function dailySynthesis(
+  env: Env,
+  trDay: string,
+  rawBody?: { force?: boolean }
+): Promise<DailySynthesis> {
+  const cacheKey = `ai:daily:${trDay}`;
+  if (!rawBody?.force) {
+    try {
+      const cached = await env.kapi_ai_cache.get(cacheKey);
+      if (cached) {
+        try {
+          return JSON.parse(cached) as DailySynthesis;
+        } catch {
+          try { await env.kapi_ai_cache.delete(cacheKey); } catch {}
+        }
+      }
+    } catch {}
+  }
+
+  const range = trDayRange(trDay);
+  if (!range) throw new Error("geçersiz tarih formatı (YYYY-MM-DD)");
+  const [start, end] = range;
+
+  const rows = (await env.kapi_db
+    .prepare(
+      `SELECT n.disclosure_index, n.subject, n.title, n.publish_date, n.is_bist100,
+              a.importance_score, a.category, a.summary_tr,
+              GROUP_CONCAT(nc.ticker) AS tickers
+       FROM kap_analysis a
+       JOIN kap_notifications n ON n.disclosure_index = a.disclosure_index
+       LEFT JOIN notification_companies nc ON nc.disclosure_index = n.disclosure_index
+       WHERE a.summary_tr IS NOT NULL AND a.importance_score IS NOT NULL
+         AND n.publish_date >= ? AND n.publish_date < ?
+       GROUP BY n.disclosure_index
+       ORDER BY a.importance_score DESC`
+    )
+    .bind(start, end)
+    .all()) as unknown as { results: Array<Record<string, unknown>> };
+  const raw = rows.results ?? [];
+  if (raw.length === 0) {
+    throw new Error(`Gün için analiz yok (${trDay})`);
+  }
+
+  const items: DailyItemInput[] = raw.map((r) => ({
+    disclosureIndex: r.disclosure_index as string,
+    tickers: String(r.tickers ?? "")
+      .split(",")
+      .filter(Boolean),
+    companyTitle: (r.title as string) ?? "",
+    subject: (r.subject as string) ?? "",
+    score: Number(r.importance_score ?? 0),
+    category: (r.category as string) ?? "UNKNOWN",
+    summaryTr: (r.summary_tr as string) ?? "",
+    publishDate: (r.publish_date as string) ?? null,
+    isBist100: Number(r.is_bist100) === 1,
+  }));
+
+  const { headline, overlooked } = selectDaily(items);
+
+  const output = await callGemini(
+    env.GEMINI_API_KEY,
+    DAILY_SYSTEM_PROMPT,
+    buildDailyPrompt(trDay, headline, overlooked),
+    { model: env.MODEL_LOW ?? "gemini-2.5-flash", temperature: 0.5, maxOutputTokens: 4096 }
+  );
+  const synthesis = validateDaily(output);
+  synthesis.date = trDay;
+
+  const ttl = Number(env.KV_TTL_SECONDS ?? "86400");
+  await env.kapi_ai_cache.put(cacheKey, JSON.stringify(synthesis), { expirationTtl: ttl });
+  return synthesis;
+}
+
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === "/health") {
       return Response.json({ status: "ok", service: "kapi-ai", hasGemini: Boolean(env.GEMINI_API_KEY) });
+    }
+
+    // --- /daily: gün sonu sentez (S11) — Hono tarafı X-W3-Secret ile çağırır ---
+    if (url.pathname === "/daily" && request.method === "POST") {
+      if (request.headers.get("x-w3-secret") !== env.W3_SECRET) {
+        return Response.json({ error: "yetkisiz" }, { status: 401 });
+      }
+      let body: { date?: string; force?: boolean } = {};
+      try {
+        body = (await request.json()) as { date?: string; force?: boolean };
+      } catch {}
+      const trDay = body.date ?? url.searchParams.get("date") ?? trToday();
+      try {
+        const synthesis = await dailySynthesis(env, trDay, body);
+        return Response.json({ ok: true, ...synthesis });
+      } catch (err) {
+        const msg = err instanceof Error ? err.message : String(err);
+        const notFound = msg.includes("analiz yok");
+        return Response.json({ error: msg }, { status: notFound ? 404 : 500 });
+      }
     }
 
     // --- /auto: W2 tetiklemesi (yalnız BIST100 skor>=5) ---
