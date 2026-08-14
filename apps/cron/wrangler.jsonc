@@ -5,9 +5,16 @@
   "compatibility_date": "2026-08-08",
   "compatibility_flags": ["nodejs_compat"],
   "triggers": {
-    "crons": ["*/10 * * * *"]
+    "crons": ["*/10 * * * *", "30 15 * * *"]
   },
   "vars": {
-    "FETCH_URL": "https://kapi-7d527e98.fastapicloud.dev/api/cron/refresh"
-  }
+    "FETCH_URL": "https://kapi-7d527e98.fastapicloud.dev/api/cron/refresh",
+    "W3_URL": "https://kapi-ai.paraanaliz.workers.dev"
+  },
+  "services": [
+    {
+      "binding": "KAPI_AI",
+      "service": "kapi-ai"
+    }
+  ]
 }
