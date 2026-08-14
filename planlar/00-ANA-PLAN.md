@@ -67,6 +67,8 @@ TanStack (mevcut repo): /bildirimler feed + /hisse/$ticker/bildirimler sekmesi +
 | S10 | Strateji-2: Hibrit Eşik + Katmanlı AI (K2/K3) | S9 | 3 | kap |
 | S11 | Strateji-3: Gün Sonu Sentez (K4) | S10 | 4 | kap+hono+tanstack |
 | S12 | Strateji-4: Takip Listesi | S10 | 3 | hono+tanstack |
+| S13 | Strateji-5: Sistem Kapanışı + Ölçüm | S9-S12 | 4 | kap+hono+tanstack |
+| S14 | Strateji-6: Anonim Web Push (taslak) | S13 | - | hono+tanstack |
 
 ## 4b. Strateji Felsefesi (S8+)
 
@@ -128,12 +130,12 @@ Durum işaretleri: [x] tamam / [ ] bekliyor
 - [x] S10-1 Kategori bazlı zorunlu katman + eskalasyon listesi
 - [x] S10-2 W3 layer parametresi (K2 flash / K3 pro+pdf)
 - [x] S10-3 W1 otomatik PDF çekimi (K3 adayları)
-- [ ] S11-1 W3 /daily deterministik seçim + LLM anlatım
-- [ ] S11-2 Hono /api/daily + KV cache
-- [ ] S11-3 TanStack günlük rapor kartı
-- [ ] S11-4 Cron tetik (TR 18:30)
-- [ ] S12-1 localStorage takip listesi + Takipte sekmesi
-- [ ] S12-2 Feed vurgusu + "hissemi etkiler mi" filtre
+- [x] S11-1 W3 /daily deterministik seçim + LLM anlatım
+- [x] S11-2 Hono /api/daily + KV cache
+- [x] S11-3 TanStack günlük rapor kartı
+- [x] S11-4 Cron tetik (TR 18:30)
+- [x] S12-1 localStorage takip listesi + Takipte sekmesi
+- [x] S12-2 Feed vurgusu + "hissemi etkiler mi" filtre
 
 ## 6. Riskler & Notlar
 

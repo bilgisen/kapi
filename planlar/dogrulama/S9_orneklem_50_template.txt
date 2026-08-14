@@ -1,0 +1,406 @@
+S9 DOGRULAMA ORNEKLEMI — 50 rastgele sablon eslesmesi (hedef: yanlis eslesme <= %5)
+Kontrol: summary_tr, bildirimin title/subject'i ile tutarli mi? (Eslesme DOGRU / YANLIS)
+====================================================================================================
+
+[1] disclosure_index: 1648630
+    title  : ANATOLIA GAYRİMENKUL VE GİRİŞİM SERMAYESİ PORTFÖY YÖNETİMİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[2] disclosure_index: 1648631
+    title  : BTCTURK PORTFÖY YÖNETİMİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[3] disclosure_index: 1648856
+    title  : BEST BRANDS GRUP ENERJİ YATIRIM A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[4] disclosure_index: 1649342
+    title  : ANADOLU YATIRIM MENKUL KIYMETLER A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[5] disclosure_index: 1648443
+    title  : ETİLER GIDA VE TİCARİ YATIRIMLAR SANAYİ VE TİCARET A.Ş.
+    subject: Herhangi Bir Otoriteye Mali Tablo Verilmesi
+    summary: 2026 Yılı 2. Dönem Geçici Vergi Beyannamesi Gelir Tablosu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[6] disclosure_index: 1649336
+    title  : DENİZBANK A.Ş.
+    subject: Özel Durum Açıklaması (Genel)
+    summary: Takipteki Kredi Portföyünden Satış
+    skor=4 kategori=BOND_ISSUE
+    OZET  : Şirket, belirlenen tutarda kredi/borçlanma anlaşması yaptı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[7] disclosure_index: 1647002
+    title  : Z GAYRİMENKUL YATIRIM ORTAKLIĞI A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 30 Haziran 2026 Tarihli Yönetim Kurulu Faaliyet Raporu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[8] disclosure_index: 1650688
+    title  : HEKTAŞ TİCARET T.A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=8 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[9] disclosure_index: 1647487
+    title  : BALATACILAR BALATACILIK SANAYİ VE TİCARET A.Ş.
+    subject: Payların Geri Alınmasına İlişkin Bildirim
+    summary: 10.08.2026 Tarihli Pay Geri Alımı Hakkında
+    skor=4 kategori=SHARE_BUYBACK
+    OZET  : Şirket, kendi paylarını geri alım programı kapsamında bildirilen tutarda işlemi gerçekleştirdi.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[10] disclosure_index: 1647194
+    title  : GALATA WIND ENERJİ A.Ş.
+    subject: Faaliyet Raporu (Konsolide)
+    summary: 2026 2. Çeyrek Ara Dönem Faaliyet Raporu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[11] disclosure_index: 1648261
+    title  : ANADOLU EFES BİRACILIK VE MALT SANAYİİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[12] disclosure_index: 1647356
+    title  : İNNOSA TEKNOLOJİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[13] disclosure_index: 1650197
+    title  : MEKSA PORTFÖY YÖNETİMİ A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 01.01.2026-30.06.2026 Bağımsız Denetimden Geçmiş Faaliyet raporu
+    skor=8 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[14] disclosure_index: 1649415
+    title  : JCR AVRASYA DERECELENDİRME A.Ş.
+    subject: Kredi Derecelendirmesi
+    summary: KREDİ DERECELENDİRME BİLDİRİMİ
+    skor=4 kategori=BOND_ISSUE
+    OZET  : Şirket, belirlenen tutarda kredi/borçlanma anlaşması yaptı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[15] disclosure_index: 1647112
+    title  : DESTEK YATIRIM MENKUL DEĞERLER A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 30 Haziran 2026 Faaliyet Raporu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[16] disclosure_index: 1647054
+    title  : ERSU MEYVE VE GIDA SANAYİ A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 2026 Yılı 2.Çeyrek Dönemi Faaliyet Raporu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[17] disclosure_index: 1649831
+    title  : KOTON MAĞAZACILIK TEKSTİL SANAYİ VE TİCARET A.Ş.
+    subject: Geleceğe Dönük Değerlendirmeler
+    summary: 2026 Finansal Yılına İlişkin Yönetim Beklentileri
+    skor=4 kategori=PRODUCTION_SALES
+    OZET  : Şirket yeni bir şube/mağaza açılışı gerçekleştirdi.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[18] disclosure_index: 1646918
+    title  : ICU GİRİŞİM SERMAYESİ YATIRIM ORTAKLIĞI A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 
+Faaliyet Raporu(Konsolide Olmayan) 30.06.2026 Dönemine Ait Konsolide Olmayan Yönetim Kurulu Faaliyet Raporu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[19] disclosure_index: 1648877
+    title  : INVESTCO HOLDİNG A.Ş.
+    subject: Özel Durum Açıklaması (Genel)
+    summary: Bağlı Ortaklığımız REM GSYO A.Ş.?nin Sermaye Artırımı ve Kayıtlı Sermaye Tavanı İznine İlişkin SPK Başvurusu Hakkında
+    skor=4 kategori=CAPITAL_INCREASE
+    OZET  : Şirket, kayıtlı sermaye tavanını belirlenen tutara yükseltmek için SPK onayına başvurdu.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[20] disclosure_index: 1650139
+    title  : 24 GAYRİMENKUL VE GİRİŞİM SERMAYESİ PORTFÖY YÖNETİMİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=8 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[21] disclosure_index: 1647339
+    title  : BANVİT BANDIRMA VİTAMİNLİ YEM SANAYİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[22] disclosure_index: 1647301
+    title  : DOF ROBOTİK SANAYİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[23] disclosure_index: 1646948
+    title  : HUZUR FAKTORİNG A.Ş.
+    subject: Sorumluluk Beyanı (Konsolide Olmayan)
+    summary: Huzur Faktoring A.Ş. 30.06.2026 Dönemine İlişkin Finansal Raporlara Ait Sorumluluk Beyanı
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[24] disclosure_index: 1648781
+    title  : YAYLA AGRO GIDA SANAYİ VE TİCARET A.Ş.
+    subject: Payların Geri Alınmasına İlişkin Bildirim
+    summary: 	
+Pay Geri Alım İşlemleri
+    skor=4 kategori=SHARE_BUYBACK
+    OZET  : Şirket, kendi paylarını geri alım programı kapsamında bildirilen tutarda işlemi gerçekleştirdi.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[25] disclosure_index: 1648382
+    title  : SÜMER FAKTORİNG A.Ş.
+    subject: Pay Dışında Sermaye Piyasası Aracı İşlemlerine İlişkin Bildirim (Faiz İçeren)
+    summary: TRFSUMF82610 ISIN Kodlu Finansman Bonosunun 4. Kuponu ve Ana Parasının Ödenmesi Hakkında
+    skor=4 kategori=BOND_ISSUE
+    OZET  : Şirket, belirlenen tutarda kredi/borçlanma anlaşması yaptı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[26] disclosure_index: 1647065
+    title  : KAMUYU AYDINLATMA PLATFORMU
+    subject: Finansal Rapor Ek Süre Taleplerine İlişkin SPK Değerlendirmesi
+    summary: Finansal Rapor Ek Süre Taleplerine İlişkin SPK Değerlendirmesi
+    skor=7 kategori=SPECIAL_EVENT
+    OZET  : SPK, şirketin ilgili başvurusunu onayladı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[27] disclosure_index: 1650419
+    title  : AHLATCI PORTFÖY YÖNETİMİ A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 30.06.2026 Ara Dönem Faaliyet Raporu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[28] disclosure_index: 1647213
+    title  : FAİR FİNANSMAN A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=BOND_ISSUE
+    OZET  : Şirket, belirlenen tutarda kredi/borçlanma anlaşması yaptı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[29] disclosure_index: 1649090
+    title  : CITIBANK A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[30] disclosure_index: 1646921
+    title  : RUBENİS TEKSTİL SANAYİ TİCARET A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[31] disclosure_index: 1650337
+    title  : BORSA İSTANBUL A.Ş.
+    subject: Borçlanma Araçlarının / Kira Sertifikalarının İşlem Görmeye Başlaması
+    summary: Borçlanma Araçlarının / Kira Sertifikalarının İşlem Görmeye Başlaması
+    skor=4 kategori=BOND_ISSUE
+    OZET  : Şirket, belirlenen tutarda kredi/borçlanma anlaşması yaptı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[32] disclosure_index: 1649539
+    title  : ROTA PORTFÖY YÖNETİMİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[33] disclosure_index: 1646942
+    title  : HUZUR FAKTORİNG A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[34] disclosure_index: 1650058
+    title  : BİRLEŞİK İPOTEK FİNANSMANI A.Ş.
+    subject: Pay Dışında Sermaye Piyasası Aracı İşlemlerine İlişkin Bildirim (Faiz İçeren)
+    summary: Türkiye Menkul Kıymetleştirme Şirketi Fibabanka Beşinci Varlık Finansmanı Fonu VDMK İtfası
+    skor=4 kategori=BOND_ISSUE
+    OZET  : Şirket, belirlenen tutarda kredi/borçlanma anlaşması yaptı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[35] disclosure_index: 1650439
+    title  : TEK-ART İNŞAAT TİCARET TURİZM SANAYİ VE YATIRIMLAR A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=8 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[36] disclosure_index: 1647328
+    title  : YİĞİT AKÜ MALZEMELERİ NAKLİYAT TURİZM İNŞAAT SANAYİ VE TİCARET A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 2026 Yılı 2.3 Aylık Faaliyet Raporu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[37] disclosure_index: 1649368
+    title  : TRIVE PORTFÖY YÖNETİMİ A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[38] disclosure_index: 1650056
+    title  : BİRLEŞİK İPOTEK FİNANSMANI A.Ş.
+    subject: Pay Dışında Sermaye Piyasası Aracı İşlemlerine İlişkin Bildirim (Faiz İçeren)
+    summary: TMKŞ Garanti BBVA Birinci Varlık Finansmanı Fonu VDMK İtfası
+    skor=4 kategori=BOND_ISSUE
+    OZET  : Şirket, belirlenen tutarda kredi/borçlanma anlaşması yaptı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[39] disclosure_index: 1649426
+    title  : MATRİKS FİNANSAL TEKNOLOJİLER A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[40] disclosure_index: 1650381
+    title  : BİRLEŞİM MÜHENDİSLİK ISITMA SOĞUTMA HAVALANDIRMA SANAYİ VE TİCARET A.Ş.
+    subject: Herhangi Bir Otoriteye Mali Tablo Verilmesi
+    summary: Herhangi Bir Otoriteye Mali Tablo Verilmesi
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[41] disclosure_index: 1647473
+    title  : FLAP KONGRE TOPLANTI HİZMETLERİ OTOMOTİV VE TURİZM A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 2026 Yılı İlk Yarı Faaliyet Raporu
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[42] disclosure_index: 1649062
+    title  : STATECH PORTFÖY YÖNETİMİ A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: 01.01.2026-30.06.2026 Dönemine ait Faaliyet Raporu ekte sunulmuştur.
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[43] disclosure_index: 1648868
+    title  : DÜNYA KATILIM BANKASI A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[44] disclosure_index: 1649031
+    title  : PİRAMİT MENKUL KIYMETLER A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[45] disclosure_index: 1649436
+    title  : HSBC BANK A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[46] disclosure_index: 1649412
+    title  : YATIRIM FİNANSMAN MENKUL DEĞERLER A.Ş.
+    subject: Fiyat Tespit Raporuna İlişkin Analist Raporu (Halka Arza Aracılık Eden Kuruluş Tarafından Hazırlanan)
+    summary: Dof Robotik Sanayi A.Ş. Halka Arz Fiyat Tespit Raporuna İlişkin Değerlendirme Raporu  2
+    skor=4 kategori=BOND_ISSUE
+    OZET  : Şirket, belirlenen tutarda kredi/borçlanma anlaşması yaptı.
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[47] disclosure_index: 1646876
+    title  : KAYATUR FİLO KİRALAMA A.Ş.
+    subject: Sorumluluk Beyanı (Konsolide Olmayan)
+    summary: 01.01.2026-30.06.2026 FİNANSAL RAPOR SORUMLULUK BEYANI
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[48] disclosure_index: 1647545
+    title  : BAYRAK EBT TABAN SANAYİ VE TİCARET A.Ş.
+    subject: Kurumsal Yönetim Bilgi Formu (Güncelleme) - Yönetim Kurulu-2
+    summary: Yönetim Kurulu Üyesi Değişikliği
+    skor=5 kategori=BOARD_DECISION
+    OZET  : Şirkette üst düzey görev değişikliği yaşandı (tarih).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[49] disclosure_index: 1646869
+    title  : KAYATUR FİLO KİRALAMA A.Ş.
+    subject: Finansal Rapor
+    summary: 
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+
+[50] disclosure_index: 1649792
+    title  : TACİRLER PORTFÖY YÖNETİMİ A.Ş.
+    subject: Faaliyet Raporu (Konsolide Olmayan)
+    summary: TACİRLER PORTFÖY YÖNETİMİ A.Ş. YÖNETİM KURULU FAALİYET RAPORU
+    skor=7 kategori=FINANCIAL_REPORT
+    OZET  : Şirket, dönem finansal raporunu yayınladı (belirtilen).
+    -> Eslesme: [ ] DOGRU  [ ] YANLIS
+

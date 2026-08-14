@@ -1,0 +1,57 @@
+S10-6 DOGRULAMA ORNEKLEMI — 5 K2 (flash) + K3 (pro) analiz
+Kontrol: ozet dogru mu, onem skoru makul mu, etki analizi yararli mi?
+====================================================================================================
+
+### K2 — gemini-2.5-flash (5 adet)
+
+[1] 1650484 | skor=5 | SPECIAL_EVENT | 2026-08-14 19:52:59
+    title: ENERYA ENERJİ A.Ş.
+    subject: Özel Durum Açıklaması (Genel)
+    OZET: Enerya Enerji A.Ş.'nin bağlı ortaklığı Ahlatcı Altın İşletmeleri'ne ait Yozgat Sarıkaya Altın Madeni Projesi için revize edilmiş UMREK Raporu yayımlandı. Rapor, sahadaki arama hedefi potansiyelini minimum 420-450 bin ons, maksimum 654-927 bin ons altın içeriği olarak belirledi. Ancak, bu hedefler henüz 'Maden Kaynağı' veya 'Maden Rezervi' olarak sınıflandırılamıyor ve kesinlik taşımıyor.
+    ETKI: Bildirim, şirketin altın madenciliği faaliyetlerindeki potansiyelini ortaya koyan önemli bir arama hedefi verisi sunmaktadır. Belirlenen altın içeriği potansiyeli uzun vadede şirket değerine olumlu katkı sağlayabilir. Ancak, raporun 'Arama Hedefi' niteliğinde olması ve henüz kesinleşmiş bir 'Maden Kaynağı' veya 'Maden Rezervi' olmaması nedeniyle, hisse üzerinde kısa vadede doğrudan ve somut bir maddi etkisi beklenmemektedir. Şirketin devam eden sondaj ve metalurjik test çalışmaları, bu potansiyelin gelecekteki kesinliğini belirleyecektir.
+    DURUM: neutral
+
+[2] 1650583 | skor=5 | SPECIAL_EVENT | 2026-08-14 19:46:07
+    title: OYAK ÇİMENTO FABRİKALARI A.Ş.
+    subject: Özel Durum Açıklaması (Genel)
+    OZET: OYAK Çimento'nun ana hissedarı TCC Group Holdings, Türkiye, Avrupa ve Afrika'daki çimento, beton ve yapı malzemeleri faaliyetlerini bir araya getirecek olan Cimpor International Holdings'i kurmayı ve yurt dışı borsalarda halka arz etmeyi planlamaktadır. OYAK Çimento, bu yeni uluslararası yapıda temel endüstriyel ve operasyonel platformlardan biri olarak konumlandırılacaktır.
+    ETKI: Bu yapılanma, OYAK Çimento'nun uluslararası bir platformun parçası olarak küresel görünürlüğünü artırma ve yatırımcı tabanını genişletme potansiyeli taşımaktadır. Bildirimde, OYAK Çimento'nun mevcut faaliyetlerinde, yönetiminde ve Borsa İstanbul'daki işlem statüsünde herhangi bir değişiklik olmayacağı açıkça belirtilmiştir. Bu durum, şirketin operasyonel ve finansal yapısında anlık bir olumsuz etki beklenmediğini göstermektedir. Uzun vadede, Cimpor International'ın düşük karbonlu büyüme ve sürdürülebilirlik hedeflerine katkıda bulunarak OYAK Çimento'nun değerini artırabilir.
+    DURUM: positive
+
+[3] 1650464 | skor=5 | SPECIAL_EVENT | 2026-08-14 19:45:33
+    title: TÜRKİYE ŞİŞE VE CAM FABRİKALARI A.Ş.
+    subject: Özel Durum Açıklaması (Genel)
+    OZET: Türkiye Şişe ve Cam Fabrikaları A.Ş., 1 Ocak-30 Haziran 2026 dönemine ait faaliyet sonuçlarını ve bu sonuçlara ilişkin değerlendirmeleri içeren basın bültenini kamuoyunun bilgisine sunduğunu duyurdu. Bu bildirim, şirketin ilk yarıyıl finansal tablolarının açıklandığını ve ilgili bilgilerin yatırımcılarla paylaşıldığını belirtmektedir.
+    ETKI: Bu bildirim, şirketin finansal tablolarının açıklandığını duyurmakta olup, tabloların içeriği hakkında bilgi vermemektedir. Dolayısıyla, bu duyurunun hisse senedi üzerinde doğrudan bir maddi etkisi bulunmamaktadır. Etki, açıklanan finansal sonuçların (gelir, kar, borçluluk vb.) beklentileri karşılayıp karşılamadığına veya aşıp aşmadığına bağlı olacaktır. Yatırımcılar için önemli olan, basın bülteninde yer alan detaylı finansal verilerin incelenmesidir.
+    DURUM: neutral
+
+[4] 1650157 | skor=5 | SPECIAL_EVENT | 2026-08-14 19:44:48
+    title: ENERYA ENERJİ A.Ş.
+    subject: Özel Durum Açıklaması (Genel)
+    OZET: Enerya Enerji'nin bağlı ortaklığı Enerya Denizli Gaz Dağıtım A.Ş., Pamukkale Belediyesi'nin talebi üzerine Pamukkale ilçesi Karahayıt Mahallesi'nde doğal gaz dağıtımı yapmak için lisans kapsamını genişletme kararı almıştır. Bu kapsamda Enerji Piyasası Düzenleme Kurumu'na (EPDK) başvuru yapılmıştır.
+    ETKI: Bu lisans genişlemesi, bağlı ortaklığın operasyonel alanını ve potansiyel müşteri tabanını artırma fırsatı sunmaktadır. Kısa vadede doğrudan bir finansal etki beklenmese de, uzun vadede şirketin gelirlerini ve pazar payını artırma potansiyeli taşıyan olumlu bir büyüme adımıdır. Sürecin tamamlanması için EPDK'nın onayı belirleyici olacaktır.
+    DURUM: positive
+
+[5] 1650154 | skor=5 | SPECIAL_EVENT | 2026-08-14 19:44:39
+    title: ENERYA ENERJİ A.Ş.
+    subject: Özel Durum Açıklaması (Genel)
+    OZET: Enerya Enerji'nin bağlı ortaklığı Enerya Erzincan Gaz Dağıtım A.Ş.'nin Kemaliye ilçesini kapsayacak şekilde doğal gaz dağıtım lisansını genişletme başvurusu Enerji Piyasası Düzenleme Kurumu (EPDK) tarafından onaylanmıştır. Bu onay, Kemaliye Belediyesi'nden gelen talep üzerine yapılmıştır.
+    ETKI: Bu lisans genişlemesi, şirketin faaliyet alanını ve potansiyel müşteri tabanını artırarak uzun vadede gelirlerini yükseltme potansiyeli taşımaktadır. Yeni bir ilçeye doğal gaz dağıtımı yapılması, şirketin büyüme stratejisine olumlu katkı sağlayabilir ve operasyonel genişlemeyi destekler. Bu tür gelişmeler genellikle hisse senedi üzerinde pozitif bir etki yaratma eğilimindedir, ancak yeni bölgedeki yatırım maliyetleri ve operasyonel zorluklar da göz önünde bulundurulmalıdır.
+    DURUM: positive
+
+### K3 — gemini-3.1-pro-preview (2 adet)
+
+[1] 1647502 | skor=8 | FINANCIAL_REPORT | 2026-08-14 19:51:31
+    title: GALATASARAY SPORTİF SINAİ VE TİCARİ YATIRIMLAR A.Ş.
+    subject: Sorumluluk Beyanı (Konsolide)
+    OZET: Galatasaray Sportif Sınai ve Ticari Yatırımlar A.Ş. (GSRAY) tarafından konsolide finansal tablolara ilişkin sorumluluk beyanı yayımlanmıştır. Bildirim metni veya finansal veriler detaylandırılmadığı için bu bildirim, periyodik raporlama yükümlülükleri kapsamında standart bir prosedürdür.
+    ETKI: Sorumluluk beyanları, şirket yönetiminin açıklanan finansal tabloların doğruluğunu kabul ettiği standart yasal metinlerdir. Bu bildirimin tek başına hisse fiyatı veya şirket değeri üzerinde doğrudan bir etkisi olması beklenmez. Yatırımcıların asıl etkiyi değerlendirmek için bu beyanla birlikte yayımlanan konsolide finansal tablo verilerini incelemesi gerekmektedir. Bu nedenle bildirimin hisse üzerindeki etkisi nötr olarak değerlendirilmektedir.
+    DURUM: neutral
+
+[2] 1648213 | skor=9 | MERGER_ACQUISITION | 2026-08-14 19:47:20
+    title: ŞOK MARKETLER TİCARET A.Ş.
+    subject: Birleşme İşlemlerine İlişkin Bildirim
+    OZET: Şok Marketler Ticaret A.Ş. (SOKM) tarafından yapılan bildirime göre, şirketin yürüttüğü kolaylaştırılmış usulde birleşme işlemi Ticaret Sicili tarafından onaylanmıştır. Bu onay ile birlikte birleşme sürecinin resmi prosedürlerinden en önemli aşama tamamlanmış ve işlem hukuki olarak tescil edilmiştir.
+    ETKI: Kolaylaştırılmış usulde birleşme işleminin Ticaret Sicili tarafından onaylanması, şirket yapısındaki sadeleşme ve entegrasyon sürecinin resmiyet kazandığını gösterir. Bu durum, genellikle %100 bağlı ortaklıkların ana ortaklık bünyesine katılmasıyla gerçekleştiğinden, operasyonel verimliliği artırarak yönetim maliyetlerini düşürebilir. Hisse senedi üzerinde kısa vadede nötr veya hafif pozitif bir etki yaratması beklenirken, asıl fayda uzun vadeli bilançolarda maliyet avantajı olarak görülecektir.
+    DURUM: positive
+

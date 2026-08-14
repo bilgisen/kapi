@@ -86,6 +86,7 @@ async function ingest(env: Env): Promise<IngestionResult> {
        FROM kap_notifications n
        LEFT JOIN kap_analysis a ON a.disclosure_index = n.disclosure_index
        WHERE a.disclosure_index IS NULL
+          OR (a.source = 'auto' AND a.summary_tr IS NULL AND a.importance_score >= 5 AND n.is_bist100 = 1)
        ORDER BY n.publish_date ASC
        LIMIT ?`
     )
