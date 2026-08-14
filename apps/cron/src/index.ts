@@ -16,7 +16,11 @@ export interface Env {
   FETCH_SECRET: string;
 }
 
-/** W1 sync_state'te koşu sürüyorsa (RUNNING) tetiklemeyi atla — birikme önlenir. */
+/** W1 sync_state'te koşu sürüyorsa (RUNNING) tetiklemeyi atla — birikme önlenir.
+ *  RUNNING bayrağı 12 dk'dan eskiyse "ölü koşu" sayılır (deploy/çökme sonrası
+ *  yapışan bayrak) ve tetiklemeye izin verilir. */
+const STALE_MS = 12 * 60 * 1000;
+
 async function isBusy(env: Env): Promise<boolean> {
   try {
     const health = await fetch(env.FETCH_URL.replace(/\/api\/cron\/refresh$/, "/health"), {
@@ -24,9 +28,15 @@ async function isBusy(env: Env): Promise<boolean> {
     });
     if (!health.ok) return false;
     const body = (await health.json()) as {
-      sync_state?: { last_error?: string | null } | null;
+      sync_state?: { last_error?: string | null; updated_at?: string | null } | null;
     };
-    return body?.sync_state?.last_error === "RUNNING";
+    const err = body?.sync_state?.last_error;
+    if (err !== "RUNNING") return false;
+    const updated = body?.sync_state?.updated_at;
+    if (!updated) return true;
+    const ts = new Date(updated.replace(" ", "T") + "Z").getTime();
+    if (Number.isNaN(ts)) return true;
+    return Date.now() - ts < STALE_MS;
   } catch {
     return false;
   }
