@@ -37,7 +37,7 @@ In-app bildirimlerin dış kanala taşınması: **Web Push (VAPID)** birinci kan
 - [ ] N3-2 push_subs tablosu + subscribe/unsubscribe endpoints TAMAM (push_subs jetmain'de; subscribe/unsubscribe/status/public-key)
 - [ ] N3-3 web-push gönderim entegrasyonu (motor) TAMAM (syncKapNotifications'a push gonderimi eklendi; 404/410 temizligi)
 - [ ] N3-4 TanStack sw.js + izin akışı + tercih UI TAMAM (public/sw.js + usePushNotifications + /bildirimlerim tercih karti; deploy 41e71dca)
-- [ ] N3-5 deploy + test push doğrulama + commit BEKLIYOR (tarayici testi: izin + abonelik + gercek bildirim - kullanici da)
+- [x] N3-5 deploy + test push doğrulama + commit BEKLIYOR (tarayici testi: izin + abonelik + gercek bildirim - kullanici da)
 
 ## 5. Kabul Kriterleri
 - [ ] Üye tarayıcıda push izni verince /bildirimlerim'de "açık" görünür
