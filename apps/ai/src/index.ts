@@ -301,6 +301,18 @@ async function dailySynthesis(
 
 export default {
   async fetch(request: Request, env: Env): Promise<Response> {
+    try {
+      return await this.handle(request, env);
+    } catch (err) {
+      console.error("[kapi-ai] beklenmeyen hata:", err);
+      return Response.json(
+        { error: err instanceof Error ? err.message : String(err) },
+        { status: 500 }
+      );
+    }
+  },
+
+  async handle(request: Request, env: Env): Promise<Response> {
     const url = new URL(request.url);
     if (url.pathname === "/health") {
       return Response.json({ status: "ok", service: "kapi-ai", hasGemini: Boolean(env.GEMINI_API_KEY) });
@@ -378,6 +390,6 @@ export default {
       }
     }
 
-    return Response.json({ error: "not found" }, { status: 404 });
+        return Response.json({ error: "not found" }, { status: 404 });
   },
 };
