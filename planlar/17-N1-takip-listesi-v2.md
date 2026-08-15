@@ -30,12 +30,12 @@ Takip listesini localStorage'dan sunucuya taşımak: rol bazlı limitler (free/m
 - `ta.js` tier gating: `c.get('role')` hiç set edilmiyor → `c.get('user')?.role` kullanılacak
 
 ## 4. Görev Listesi
-- [ ] N1-1 jetmain tier değerlerini doğrula + limit matrisi
-- [ ] N1-2 D1 tabloları
-- [ ] N1-3 Hono CRUD + limits
-- [ ] N1-4 ta.js fix
-- [ ] N1-5 TanStack senkron + merge
-- [ ] N1-6 lint/typecheck/test + deploy + doğrulama
+- [ ] N1-1 jetmain tier değerlerini doğrula + limit matrisi TAMAM (free/jetabone/proabone; 13/1/1)
+- [ ] N1-2 D1 tabloları TAMAM (jetmain)
+- [ ] N1-3 Hono CRUD + limits TAMAM (deploy b36d3e94)
+- [ ] N1-4 ta.js fix TAMAM (getRole -> c.get('user')?.role)
+- [ ] N1-5 TanStack senkron + merge TAMAM (store + merge + senkron)
+- [ ] N1-6 lint/typecheck/test + deploy + doğrulama TAMAM (tanstack 0f4cce4c / 61dbafb)
 
 ## 5. Kabul Kriterleri
 - [ ] Üye login → takip listeleri sunucuda kalıcı; refresh sonrası korunur

@@ -30,12 +30,12 @@ Single inbox: tüm kullanıcı bildirimleri tek tabloda, topbar'da zil + rozet +
 - `/bildirimler` → `/kap-bildirimleri` (route taşıma + redirect)
 
 ## 4. Görev Listesi
-- [ ] N2-1 tablo + endpoints
-- [ ] N2-2 KAP eşleştirme motoru + duyuru endpoint'i
-- [ ] N2-3 TanStack topbar + dropdown
-- [ ] N2-4 /bildirimlerim sayfası
-- [ ] N2-5 /kap-bildirimleri taşıma + redirect
-- [ ] N2-6 deploy + doğrulama (canlı KAP bildirimi → kullanıcı bildirimi)
+- [ ] N2-1 tablo + endpoints TAMAM (deploy 500ff4c0)
+- [ ] N2-2 KAP eşleştirme motoru + duyuru endpoint'i TAMAM (cron entegre, idempotent; announce secret N2_NOTIFY_SECRET)
+- [ ] N2-3 TanStack topbar + dropdown TAMAM (Bell + badge + 60s poll)
+- [ ] N2-4 /bildirimlerim sayfası TAMAM
+- [ ] N2-5 /kap-bildirimleri taşıma + redirect TAMAM (307 dogrulandi)
+- [ ] N2-6 deploy + doğrulama (canlı KAP bildirimi → kullanıcı bildirimi) TAMAM (tanstack e3525995 / bec3cfa; announce 16 kullaniciya ulasti; KAP eslestirme: jetmain'de 0 takip oldugundan 0 insert - kullanici takip ekledikce devreye girer)
 
 ## 5. Kabul Kriterleri
 - [ ] Takip hissesinde yeni skor≥5 bildirim → topbar rozeti artar
