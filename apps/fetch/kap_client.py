@@ -60,6 +60,9 @@ class KapClient:
                     self.warmup()
                     continue
                 resp.raise_for_status()
+                # KAP charset belirtmez (application/json) — requests Latin-1
+                # varsayar ve UTF-8 içerik çift-encode olur (mojibake). Zorla.
+                resp.encoding = "utf-8"
                 return resp
             except requests.RequestException as exc:
                 last_err = exc

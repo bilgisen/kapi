@@ -78,7 +78,7 @@ async function triggerDaily(env: Env): Promise<Response> {
       { status: 503, headers: { "content-type": "application/json" } }
     );
   }
-  const target = env.W3_URL ?? "https://kapi-ai.paraanaliz.workers.dev";
+  const target = env.W3_URL ?? "https://kapi-ai.jetborsa.workers.dev";
   const resp = env.KAPI_AI
     ? await env.KAPI_AI.fetch(target + "/daily", {
         method: "POST",
@@ -100,8 +100,11 @@ async function triggerDaily(env: Env): Promise<Response> {
 export default {
   async scheduled(event: ScheduledEvent, env: Env, ctx: ExecutionContext): Promise<void> {
     const cron = event.cron;
-    if (cron === "30 15 * * *") {
-      // S11-6: TR 18:30 = UTC 15:30 — gün sonu sentezi önceden üret.
+    // S11-6: TR 18:30 = UTC 15:30 — gün sonu sentezi önceden üret.
+    // Tek cron (*/10) altında saat kontrolü ile ayrıştırılıyor (Free cron limiti).
+    const d = new Date();
+    const utcMinutes = d.getUTCHours() * 60 + d.getUTCMinutes();
+    if (utcMinutes >= 925 && utcMinutes <= 940) {
       ctx.waitUntil(
         triggerDaily(env).catch((err) => {
           console.error("kapi-cron daily hata:", err);

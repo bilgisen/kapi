@@ -1,9 +1,12 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "kapi-ai",
+  "name": "kapi",
   "main": "src/index.ts",
   "compatibility_date": "2026-08-08",
   "compatibility_flags": ["nodejs_compat"],
+  "triggers": {
+    "crons": ["*/10 * * * *"]
+  },
   "d1_databases": [
     {
       "binding": "kapi_db",
@@ -18,9 +21,11 @@
     }
   ],
   "vars": {
+    "BATCH_LIMIT": "100",
     "MODEL_LOW": "gemini-2.5-flash",
     "MODEL_HIGH": "gemini-3.1-pro-preview",
     "DAILY_ANALYZE_LIMIT": "1000",
-    "KV_TTL_SECONDS": "86400"
+    "KV_TTL_SECONDS": "86400",
+    "FETCH_URL": "https://kapi-7d527e98.fastapicloud.dev/api/cron/refresh"
   }
 }
