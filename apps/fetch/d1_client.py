@@ -115,7 +115,7 @@ class D1Client:
     def _headers(self) -> dict:
         return {
             "Authorization": f"Bearer {self.access_token}",
-            "Content-Type": "application/json",
+            "Content-Type": "application/json; charset=utf-8",
         }
 
     def _endpoint(self) -> str:
