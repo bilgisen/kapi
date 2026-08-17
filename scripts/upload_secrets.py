@@ -3,6 +3,8 @@ from apps.fetch.d1_client import D1Client
 
 def main():
     d = D1Client()
+    # Trigger token loading & automatic OAuth refresh if expired
+    d.execute("SELECT 1")
     headers = d._headers()
     
     workers = ["kapi-ai", "hono"]
