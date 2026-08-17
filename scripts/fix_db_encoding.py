@@ -9,12 +9,12 @@ def fix_mojibake(s: str | None) -> str | None:
     if not s:
         return s
     try:
-        # If it's already correct, encoding as latin-1 and decoding as utf-8
+        # If it's already correct, encoding as cp1252 and decoding as utf-8
         # might fail or result in the same string if it's ascii.
         # But if it has typical mojibake characters, we clean it up.
         if any(c in s for c in ["Ä", "Å", "Ã", "Ö", "Ü", "Ç", "ğ", "ı", "ş", "ö", "ü", "ç"]):
-            # Test if it can be encoded to latin-1 and decoded as utf-8
-            raw_bytes = s.encode('latin-1', errors='ignore')
+            # Test if it can be encoded to cp1252 and decoded as utf-8
+            raw_bytes = s.encode('cp1252', errors='ignore')
             decoded = raw_bytes.decode('utf-8', errors='ignore')
             if decoded and decoded != s:
                 return decoded
